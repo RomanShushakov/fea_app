@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>StressTable FEA</title>
+    
+    <link rel="stylesheet" href="./common/normalize.css">
+    <link rel="stylesheet" href="./common/custom_components/_custom_colors.css">
+    
+    <link rel="stylesheet" href="./fea_service/fea_index.css">
+    <link rel="stylesheet" href="./fea_service/_fea_colors.css">
+
+    <script type="module" src="./common/custom_components/custom_components_index.js" defer></script>
+    <script type="module" src="./fea_service/fea_index.js" defer></script>
+</head>
+
+<body>
+    <fea-app
+        username="{{ username }}"
+        auth-login-url="{{ auth_login_url }}"
+        auth-signup-url="{{ auth_signup_url }}"
+        logout-url="{{ logout_url }}"
+        auth-account-details-url="{{ auth_account_details_url }}"
+        tools-url="{{ tools_url }}"
+        is-logged-in="{{ is_logged_in }}"
+    >
+    </fea-app>
+</body>
+
+</html>

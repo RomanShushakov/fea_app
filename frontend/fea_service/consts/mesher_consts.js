@@ -1,0 +1,3 @@
+export const TRUSS_ELEMENTS_GROUP_NUMBER = 1;
+export const BEAM_ELEMENTS_GROUP_NUMBER = 2;
+export const PLATE_ELEMENTS_GROUP_NUMBER = 3;

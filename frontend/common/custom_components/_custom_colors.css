@@ -1,0 +1,16 @@
+:root {
+    /*menubar color scheme*/
+    --menubar-bg-color: #212933;
+    --menubar-border-color: #5c687a;
+    --menubar-logo-color: #eaeee3;
+
+    --menubar-account-button-bg-color: #507b16;
+    --menubar-account-button-hover-bg-color: #4c6028;
+    --menubar-account-button-font-color: #eaeee3;
+    --menubar-account-button-hover-font-color: #acb1ab;
+
+    --menubar-dropdown-menu-bg-color: #454f61;
+    --menubar-dropdown-menu-hover-bg-color: #3c4251;
+    --menubar-dropdown-menu-font-color: #eaeee3;
+    --menubar-dropdown-menu-border-color: #637084;
+}

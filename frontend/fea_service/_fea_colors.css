@@ -1,0 +1,91 @@
+:root {
+    /*toolbar color scheme*/
+    --toolbar-bg-color: #1b1f25;
+    --toolbar-border-color: #5c687a;
+
+    --toolbar-button-bg-color: #1b1f25;
+    --toolbar-button-hover-bg-color: #20232a;
+
+    --toolbar-active-button-icon-hover-bg-color: #335061;
+    --toolbar-active-button-icon-bg-color: #254354;
+
+    --toolbar-menu-buttons-button-icon-content-color-1: #D9D9D9;
+    --toolbar-menu-buttons-button-icon-content-color-2: #72C5FF;
+    --toolbar-menu-buttons-button-icon-content-color-3: #7475E6;
+    --toolbar-menu-buttons-button-icon-content-color-4: #622629;
+    --toolbar-menu-buttons-button-icon-content-color-5: #234D2D;
+
+
+    /*preprocessor-menu color scheme*/
+    --preprocessor-menu-bg-color: #2e3440;
+    --preprocessor-menu-border-color: #5c687a;
+
+
+    /*preprocessor-menu-buttons and content color scheme*/
+    --preprocessor-menu-buttons-bg-color: #2e3440;
+
+    --preprocessor-menu-buttons-button-bg-color: #2e3440;
+    --preprocessor-menu-buttons-button-border-color: #3b4453;
+    --preprocessor-menu-buttons-button-hover-bg-color: #2d303b;
+    --preprocessor-menu-buttons-button-icon-bg-color: #2e3440;
+    --preprocessor-menu-buttons-button-icon-caption-color: #D9D9D9;
+    --preprocessor-menu-buttons-button-icon-content-color-1: #D9D9D9;
+    --preprocessor-menu-buttons-button-icon-content-color-2: #72C5FF;
+    --preprocessor-menu-buttons-button-icon-hover-bg-color: #2d303b;
+
+    --preprocessor-menu-buttons-active-button-bg-color: #3b4453;
+    --preprocessor-menu-buttons-active-button-hover-bg-color: #242932;
+    --preprocessor-menu-buttons-active-button-icon-bg-color: #3b4453;
+    --preprocessor-menu-buttons-active-button-icon-hover-bg-color: #242932;
+
+    --preprocessor-menu-content-caption-color: #D9D9D9;
+    --preprocessor-menu-content-caption-border-color: #4a5060;
+    --preprocessor-menu-content-buttons-hover-color: #d1d2d7;
+    --preprocessor-menu-content-active-buttons-hover-color: #8bbee4;
+    --preprocessor-menu-content-active-buttons-color: #72C5FF;
+    --preprocessor-menu-content-apply-cancel-buttons-color: #0996d7;
+    --preprocessor-menu-content-processing-buttons-color: #622629;
+    --preprocessor-menu-content-dropdown-menu-bg-color: #484f60;
+
+    --preprocessor-menu-content-scrollbar-track-color: #2f3641;
+    --preprocessor-menu-content-scrollbar-thumb-color: #80848b;
+    --preprocessor-menu-content-scrollbar-thumb-hover-color: #555555;
+
+    --preprocessor-menu-content-aux-buttons-color: #3d5d78;
+
+
+
+    /*postprocessor-menu color scheme*/
+    --postprocessor-menu-bg-color: #2e3440;
+    --postprocessor-menu-border-color: #5c687a;
+
+
+    /*postprocessor-menu-buttons color scheme*/
+    --postprocessor-menu-buttons-bg-color: #2e3440;
+
+    --postprocessor-menu-buttons-button-bg-color: #2e3440;
+    --postprocessor-menu-buttons-button-border-color: #3b4453;
+    --postprocessor-menu-buttons-button-hover-bg-color: #2d303b;
+    --postprocessor-menu-buttons-button-icon-bg-color: #2e3440;
+    --postprocessor-menu-buttons-button-icon-caption-color: #D9D9D9;
+    --postprocessor-menu-buttons-button-icon-content-color-1: #D9D9D9;
+    --postprocessor-menu-buttons-button-icon-content-color-2: #72C5FF;
+    --postprocessor-menu-buttons-button-icon-hover-bg-color: #2d303b;
+
+    --postprocessor-menu-buttons-active-button-bg-color: #3b4453;
+    --postprocessor-menu-buttons-active-button-hover-bg-color: #242932;
+    --postprocessor-menu-buttons-active-button-icon-bg-color: #3b4453;
+
+    --postprocessor-menu-buttons-button-bg-color-2: #0996d7;
+    --postprocessor-menu-buttons-button-border-hover-bg-color-2: #4a5060;
+
+    --postprocessor-menu-content-dropdown-menu-bg-color: #484f60;
+
+    --postprocessor-menu-input-checkbox-border-color: #6c6c6d;
+
+
+    /*renderer-menu color scheme*/
+    --renderer-menu-content-scrollbar-track-color: #2f3641;
+    --renderer-menu-content-scrollbar-thumb-color: #80848b;
+    --renderer-menu-content-scrollbar-thumb-hover-color: #555555;
+}

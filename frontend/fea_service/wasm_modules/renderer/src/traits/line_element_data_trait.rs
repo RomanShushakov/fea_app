@@ -1,0 +1,45 @@
+use crate::structs::LineElementData;
+use crate::traits::RotationMatrixTrait;
+
+
+pub trait LineElementDataTrait: RotationMatrixTrait
+{
+    fn get_ref_line_element_data(&self) -> &LineElementData;
+
+    fn get_mut_ref_line_element_data(&mut self) -> &mut LineElementData;
+
+    fn get_uid(&self) -> u32
+    {
+        self.get_ref_line_element_data().uid
+    }
+
+    fn get_node_1_coordinates(&self) -> [f32; 3]
+    {
+        self.get_ref_line_element_data().node_1_coordinates
+    }
+
+    fn get_node_2_coordinates(&self) -> [f32; 3]
+    {
+        self.get_ref_line_element_data().node_2_coordinates
+    }
+
+    fn get_node_1_displacement(&self) -> [f32; 3]
+    {
+        self.get_ref_line_element_data().node_1_displacement
+    }
+
+    fn get_node_2_displacement(&self) -> [f32; 3]
+    {
+        self.get_ref_line_element_data().node_2_displacement
+    }
+
+    fn get_optional_node_1_u_result_coeff(&self) -> Option<[f32; 5]>
+    {
+        self.get_ref_line_element_data().optional_node_1_u_result_coeff
+    }
+
+    fn get_optional_node_2_u_result_coeff(&self) -> Option<[f32; 5]>
+    {
+        self.get_ref_line_element_data().optional_node_2_u_result_coeff
+    }
+}
