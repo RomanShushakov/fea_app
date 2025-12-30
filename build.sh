@@ -1,4 +1,4 @@
 cd ./frontend/fea_service/wasm_modules && \
-./build.sh && \
+./build_wasm.sh && \
 cd ../../ &&
 npm run build

@@ -1,4 +1,4 @@
-cd ./actions_router && \ 
+cd ./actions_router && \
 cargo build --release --no-default-features --target wasm32-unknown-unknown && \
 wasm-bindgen --target web --out-name actions_router --out-dir ../../wasm/actions_router --no-typescript ./target/wasm32-unknown-unknown/release/actions_router.wasm && \
 cd ../preprocessor && \
