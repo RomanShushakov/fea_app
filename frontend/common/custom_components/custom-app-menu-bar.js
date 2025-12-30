@@ -5,17 +5,6 @@ class CustomAppMenuBar extends HTMLElement {
     constructor() {
         super();
 
-        this.props = {
-            username: null,
-            authLoginUrl: null,
-            authSignupUrl: null,
-            logoutUrl: null,
-            authAccountDetailsUrl: null,
-            toolsUrl: null,
-        };
-
-        this.state = {};
-
         this.attachShadow({ mode: "open" });
 
         this.shadowRoot.innerHTML = 
@@ -412,36 +401,9 @@ class CustomAppMenuBar extends HTMLElement {
                         stroke="black" stroke-linecap="round" stroke-linejoin="round"
                     />
                 </svg>
-                <a class="tools-link-caption" href="${this.getAttribute('tools-url')}">Tools</a>
-            </div>
-
-            
-
-            <div class="menu-bar-buttons">
-                <button class="account-button">${this.getAttribute("username")}</button>
-                <div class="account-dropdown-content hidden">
-                    <button class="login-button">Log In</button>
-                    <button class="signup-button">Sign up</button>
-                    <button class="account-details-button">Account details</button>
-                    <button class="logout-button">Logout</button>
-                </div>
             </div>
         </div>
         `;
-
-        this.shadowRoot.querySelector(".account-button")
-            .addEventListener("click", () => this.toggleAccountDropdownContent());
-
-        this.shadowRoot.querySelector(".login-button").addEventListener("click", () => this.authLogin());
-
-        this.shadowRoot.querySelector(".signup-button").addEventListener("click", () => this.authSignup());
-
-        this.shadowRoot.querySelector(".logout-button").addEventListener("click", () => this.logout());
-
-        this.shadowRoot.querySelector(".account-details-button")
-            .addEventListener("click", () => this.showAccountDetails());
-
-        document.addEventListener("click", (event) => this.closeAccountDropdownContent(event));
     }
 
     connectedCallback() {
@@ -451,171 +413,12 @@ class CustomAppMenuBar extends HTMLElement {
     }
     
     static get observedAttributes() {
-        return [
-            "username", 
-            "auth-login-url", 
-            "auth-signup-url", 
-            "logout-url", 
-            "auth-account-details-url", 
-            "tools-url", 
-            "is-logged-in",
-        ];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === "username") {
-            if (newValue === "{{ username }}") {
-                this.props.username = DEFAULT_USERNAME;
-                if (this.shadowRoot.querySelector(".account-button") !== null) {
-                    this.shadowRoot.querySelector(".account-button").innerHTML = DEFAULT_USERNAME;
-                }
-            } else {
-                this.props.username = newValue;
-                if (this.shadowRoot.querySelector(".account-button") !== null) {
-                    this.shadowRoot.querySelector(".account-button").innerHTML = newValue;
-                }
-            }
-        }
-
-        if (name === "auth-login-url") {
-            this.props.authLoginUrl = newValue;
-        }
-
-        if (name === "auth-signup-url") {
-            this.props.authSignupUrl = newValue;
-        }
-
-        if (name === "logout-url") {
-            this.props.logoutUrl = newValue;
-        }
-
-        if (name === "auth-account-details-url") {
-            this.props.authAccountDetailsUrl = newValue;
-        }
-
-        if (name === "tools-url") {
-            this.props.toolsUrl = newValue;
-            if (this.shadowRoot.querySelector(".tools-link-caption") !== null) {
-                this.shadowRoot.querySelector(".tools-link-caption").href = newValue;
-            }
-        }
-
-        if (name === "is-logged-in") {
-            if (newValue === "true") {
-                if (this.shadowRoot.querySelector(".login-button") !== null) {
-                    this.shadowRoot.querySelector(".login-button").hidden = true;
-                }
-
-                if (this.shadowRoot.querySelector(".signup-button") !== null) {
-                    this.shadowRoot.querySelector(".signup-button").hidden = true;
-                }
-
-                if (this.shadowRoot.querySelector(".account-details-button") !== null) {
-                    this.shadowRoot.querySelector(".account-details-button").hidden = false;
-                }
-
-                if (this.shadowRoot.querySelector(".logout-button") !== null) {
-                    this.shadowRoot.querySelector(".logout-button").hidden = false;
-                }
-            }
-
-            if (newValue === "false" || newValue === "{{ is_logged_in }}") {
-                if (this.shadowRoot.querySelector(".login-button") !== null) {
-                    this.shadowRoot.querySelector(".login-button").hidden = false;
-                }
-
-                if (this.shadowRoot.querySelector(".signup-button") !== null) {
-                    this.shadowRoot.querySelector(".signup-button").hidden = false;
-                }
-
-                if (this.shadowRoot.querySelector(".account-details-button") !== null) {
-                    this.shadowRoot.querySelector(".account-details-button").hidden = true;
-                }
-
-                if (this.shadowRoot.querySelector(".logout-button") !== null) {
-                    this.shadowRoot.querySelector(".logout-button").hidden = true;
-                }
-            }
-        }
     }
 
     adoptedCallback() {
-    }
-
-    toggleAccountDropdownContent() {
-        const accountDropdownContent = this.shadowRoot.querySelector(".account-dropdown-content");
-        if (accountDropdownContent.classList.contains("hidden") === true) {
-            accountDropdownContent.classList.remove("hidden");
-        } else {
-            accountDropdownContent.classList.add("hidden");
-        }
-
-           
-    }
-
-    closeAccountDropdownContent(event) {
-        const paths = event.composedPath();
-        let accountButtonClicked = false;
-        for(let i = 0; i < paths.length; i++) {
-            const currentClassList = paths[i].classList;
-            if (currentClassList !== undefined) {
-                if (currentClassList.contains("account-button") === true) {
-                    accountButtonClicked = true;
-                    break;
-                }
-            }
-        }
-        if (accountButtonClicked === false) {
-            const accountDropdownContent = this.shadowRoot.querySelector(".account-dropdown-content");
-            if (accountDropdownContent.classList.contains("hidden") === false) {
-                accountDropdownContent.classList.add("hidden");
-            }
-        }
-        event.stopPropagation();
-    }
-
-    async getData(url) {
-        const repsonse = await fetch(url);
-        return repsonse;
-    };
-
-    async postData(url = "", data = {}) {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        return response;
-    }
-
-    authLogin() {
-        this.getData(this.props.authLoginUrl)
-            .then(response => {
-                window.location.href = response.url;
-        });
-    }
-
-    authSignup() {
-        this.getData(this.props.authSignupUrl)
-            .then(response => {
-                window.location.href = response.url;
-        });
-    }
-
-    logout() {
-        this.postData(this.props.logoutUrl, {})
-            .then(response => {
-                window.location.href = response.url;
-        });
-    }
-
-    showAccountDetails() {
-        this.getData(this.props.authAccountDetailsUrl)
-            .then(response => {
-                window.open(response.url, "_blank");
-        });
     }
 }
 

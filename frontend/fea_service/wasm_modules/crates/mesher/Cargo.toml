@@ -1,0 +1,18 @@
+[package]
+name = "mesher"
+edition.workspace = true
+authors.workspace = true
+version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+extended_matrix.workspace = true 
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+rand.workspace = true
+getrandom.workspace = true
+serde-wasm-bindgen.workspace = true

@@ -1,0 +1,36 @@
+[workspace]
+members = [
+    "crates/actions_router",
+    "crates/preprocessor",
+    "crates/renderer",
+    "crates/mesher",
+    "crates/solver",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+authors = ["roman shushakov <roman.a.shushakov1@gmail.com>"]
+version = "0.1.0"
+
+[profile.release]
+lto = true
+opt-level = 3
+
+[workspace.dependencies]
+wasm-bindgen = "0.2.106"
+js-sys = "0.3.83"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.148"
+wasm-bindgen-futures = "0.4.56"
+serde_derive = "1.0.228"
+rand = "0.9.2"
+getrandom = { version = "0.3.4", features = ["wasm_js"] }
+serde-wasm-bindgen = "0.6.5"
+web-sys = "0.3.83"
+mat4 = "0.2.1"
+vec4 = "0.2.1"
+
+extended_matrix = "0.9.8"
+finite_element_method = "0.9.11"
+iterative_solvers_smpl = "0.1.4"

@@ -1,0 +1,19 @@
+[package]
+name = "actions_router"
+edition.workspace = true
+authors.workspace = true
+version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+wasm-bindgen-futures.workspace = true
+serde_derive.workspace = true
+rand.workspace = true
+getrandom.workspace = true
+serde-wasm-bindgen.workspace = true

@@ -598,7 +598,7 @@ pub(crate) async fn find_ua_vector_iterative_pcg_block_jacobi_sparse_webgpu(
     max_iter: usize,
     ctx: &WebGpuCtx,
 ) -> Result<(Vector<f32>, usize), JsValue> {
-    log("Hello from block jacobi sparse webgpu");
+    log("block jacobi sparse webgpu");
 
     // 1) build b (CPU)
     let b_values = find_b_sparse_webgpu(

@@ -1445,7 +1445,7 @@ class FeaApp extends HTMLElement {
       header === PERFORM_GLOBAL_ANALYSIS_ITERATIVE_PCG_JACOBI_MESSAGE_HEADER
     ) {
       const iterations = event.detail.iterations;
-      console.log(iterations);
+      console.log(`iterations: ${iterations}`);
       this.state.communicator.extractGlobalAnalysisResult(jobName);
     }
 
@@ -1454,7 +1454,7 @@ class FeaApp extends HTMLElement {
       PERFORM_GLOBAL_ANALYSIS_ITERATIVE_PCG_BLOCK_JACOBI_MESSAGE_HEADER
     ) {
       const iterations = event.detail.iterations;
-      console.log(iterations);
+      console.log(`iterations: ${iterations}`);
       this.state.communicator.extractGlobalAnalysisResult(jobName);
     }
 
@@ -1463,7 +1463,7 @@ class FeaApp extends HTMLElement {
       PERFORM_GLOBAL_ANALYSIS_ITERATIVE_PCG_BLOCK_JACOBI_GPU_MESSAGE_HEADER
     ) {
       const iterations = event.detail.iterations;
-      console.log(iterations);
+      console.log(`iterations: ${iterations}`);
       this.state.communicator.extractGlobalAnalysisResult(jobName);
     }
 

@@ -4,7 +4,7 @@ const { Solver } = wasm_bindgen;
 
 let solver;
 async function init_wasm_in_worker() {
-  await wasm_bindgen("../wasm/solver/solver_bg.wasm");
+  await wasm_bindgen({ module_or_path: "../wasm/solver/solver_bg.wasm" });
   this.addEventListener("message", async (event) => {
     const header = event.data.header;
     const jobName = event.data.job_name;
