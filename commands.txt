@@ -1,4 +1,0 @@
-scp -i ~/.ssh/st_vultr -r ./public roman@45.63.42.241:/home/roman/workdir/fea-app
-scp -i ~/.ssh/st_vultr -r ./traefik roman@45.63.42.241:/home/roman/workdir/fea-app
-scp -i ~/.ssh/st_vultr ./docker-compose.yaml roman@45.63.42.241:/home/roman/workdir/fea-app
-scp -i ~/.ssh/st_vultr ./nginx.conf roman@45.63.42.241:/home/roman/workdir/fea-app
