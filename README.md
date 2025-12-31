@@ -1,5 +1,11 @@
 # FEA App — WebGPU & WASM Finite Element Solver Showcase
 
+![Rust](https://img.shields.io/badge/Rust-stable-orange)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-WASM-blue)
+![WebGPU](https://img.shields.io/badge/WebGPU-compute-yellow)
+![HPC](https://img.shields.io/badge/HPC-inspired-purple)
+![Status](https://img.shields.io/badge/status-technical%20showcase-lightgrey)
+
 This repository is a technical showcase of a browser-based **Finite Element Analysis (FEA)** application focused on high-performance numerical computing in the modern web stack.
 
 The project demonstrates how **WebAssembly (Rust)** and **WebGPU** can be combined to implement iterative solvers, sparse linear algebra, and preconditioners in a frontend environment, while keeping the UI responsive and the architecture clean.
