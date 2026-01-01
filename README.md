@@ -1,141 +1,112 @@
-# FEA App — WebGPU & WASM Finite Element Solver Showcase
+# fea_app
 
 ![Rust](https://img.shields.io/badge/Rust-stable-orange)
 ![WebAssembly](https://img.shields.io/badge/WebAssembly-WASM-blue)
 ![WebGPU](https://img.shields.io/badge/WebGPU-compute-yellow)
-![HPC](https://img.shields.io/badge/HPC-inspired-purple)
-![Status](https://img.shields.io/badge/status-technical%20showcase-lightgrey)
 
-This repository is a technical showcase of a browser-based **Finite Element Analysis (FEA)** application focused on high-performance numerical computing in the modern web stack.
+`fea_app` is an experimental Web-based finite element and numerical computation project, focused on implementing and understanding **iterative solvers and preconditioning techniques on the GPU using WebGPU**.
 
-The project demonstrates how **WebAssembly (Rust)** and **WebGPU** can be combined to implement iterative solvers, sparse linear algebra, and preconditioners in a frontend environment, while keeping the UI responsive and the architecture clean.
+The project combines:
 
-This is **not a toy demo** — the code mirrors real solver pipelines and GPU execution models commonly used in HPC and scientific computing.
+- numerical linear algebra (PCG, Block-Jacobi),
+- sparse matrix representations (CSR),
+- and GPU compute pipelines,
+  with the goal of exploring how **scientific and engineering-style workloads can be executed efficiently in modern web environments**.
 
----
-
-## What This Project Demonstrates
-
-- Rust → WebAssembly for numerical kernels and domain logic  
-- WebGPU compute pipelines for iterative solvers and vector operations  
-- Sparse matrix algorithms implemented for GPU execution  
-- Block-Jacobi preconditioning with LU-factored dense blocks  
-- Single-submit GPU iteration design (minimized CPU ↔ GPU synchronization)  
-- Worker-based execution model for non-blocking UI  
-- Clean separation between frontend orchestration and compute backends  
+This repository represents a **completed WebGPU-focused milestone** rather than a full production-ready solver.
 
 ---
 
-## Architecture Overview
+## Motivation
 
-The application follows a layered design similar to desktop FEA software, adapted to the browser:
+My background is in engineering and numerical methods, where I worked extensively with FEA tools (e.g. structural and stress analysis software).  
+Later, I transitioned into software engineering and full-stack development.
 
-UI (Web Components)
-↓
-JS Orchestration Layer
-↓
-Web Workers (Solver Execution)
-↓
-Rust → WebAssembly Modules
-↓
-WebGPU / WebGL
+This project grew from a personal interest in:
 
+- understanding how FEA solvers work internally,
+- bridging numerical methods with GPU computing,
+- and exploring the web as a viable platform for computation-heavy workloads.
 
----
+`fea_app` is therefore both:
 
-## Key Components
-
-### Frontend (JavaScript)
-
-- Framework-free UI built with custom Web Components  
-- Explicit application state management  
-- Clear separation between UI, data, and compute orchestration  
-- Communication with solver via Web Workers  
-
-**Relevant directories:**
-
-- `frontend/fea_service/components`
-- `frontend/fea_service/store`
-- `frontend/fea_service/workers`
+- a learning-oriented project, and
+- a hands-on engineering exploration.
 
 ---
 
-### WASM Modules (Rust)
+## What is implemented
 
-Each major subsystem is implemented as a separate Rust crate, compiled to WebAssembly:
+### Numerical core
 
-- **Preprocessor** — domain model, constraints, materials  
-- **Mesher** — mesh preparation  
-- **Renderer** — data preparation for WebGL  
-- **Solver** — iterative methods and linear algebra  
-- **Actions Router** — typed command dispatch  
+- **Preconditioned Conjugate Gradient (PCG)** solver
+- **Block-Jacobi preconditioner** with fixed block size (6×6)
+- Sparse matrices stored in **CSR format**
+- CPU-side reference implementation for validation
+- **Small dense direct solver (LU-based) used as an intermediate reference**
 
-All crates are managed in a Cargo workspace and built with a dedicated script.
+The direct solver was used during early stages as:
 
----
+- a correctness reference for validating iterative results,
+- a way to test block extraction and factorization logic,
+- and a baseline before moving fully to the iterative GPU-based approach.
 
-### GPU Compute (WebGPU)
+While not intended for large systems, this step helped ensure numerical correctness and consistency across CPU and GPU implementations.
 
-Performance-critical operations are offloaded to the GPU using WebGPU compute shaders:
+### GPU (WebGPU)
 
-- Sparse Matrix–Vector Multiplication (CSR SpMV)  
-- Dot products with multi-stage reductions  
-- Vector operations (AXPY, scaling)  
-- Block-Jacobi preconditioner (fixed 6×6 dense blocks)  
-- Scalar update kernels for PCG (α, β)  
+- Sparse matrix–vector multiplication (SpMV)
+- Dot products with parallel reduction
+- Vector operations (AXPY, scaling)
+- Block-Jacobi preconditioner application on GPU
+- Scalar reductions and solver control logic coordinated from the GPU
 
-**Design characteristics:**
-
-- One command submission per solver iteration  
-- One scalar readback per iteration  
-- Explicit memory ownership and buffer lifetimes  
-- WGSL shaders written in a deterministic, debuggable style  
-
-This part of the codebase closely resembles HPC GPU kernels, adapted to WebGPU constraints.
+The solver is structured to minimize GPU–CPU synchronization and to batch most work into a **single command submission per iteration**.
 
 ---
 
-## Solver Details
+## Architecture overview
 
-- **Algorithm:** Preconditioned Conjugate Gradient (PCG)  
-- **Matrix format:** CSR  
-- **Preconditioner:** Block-Jacobi  
-- **Fixed block size:** 6×6  
-- **LU factorization:** performed on CPU  
-- **Apply step:** executed entirely on GPU  
-- **Convergence checks:** CPU-side using squared norms  
+- **Rust + wasm-bindgen** for core logic
+- **WebGPU (via web-sys)** for GPU compute
+- Dedicated GPU executors for:
+  - SpMV
+  - dot products
+  - vector operations
+  - scalar updates
+  - block-Jacobi preconditioning
 
-The solver is numerically consistent with its CPU reference implementation and is structured for further backend reuse.
-
----
-
-## Execution Model
-
-- All heavy computation runs inside Web Workers  
-- GPU command encoding is performed inside the worker  
-- UI thread remains fully responsive  
-- CPU ↔ GPU synchronization is minimized and explicit  
+The code is intentionally verbose and explicit, prioritizing clarity and correctness over aggressive micro-optimizations.
 
 ---
 
-## Tooling & Stack
+## Scope and non-goals
 
-- **Languages:** Rust, JavaScript, WGSL  
-- **Compute:** WebAssembly, WebGPU  
-- **Rendering:** WebGL  
-- **Concurrency:** Web Workers  
-- **Build:** Vite, Cargo  
-- **Infrastructure:** Docker, Nginx (optional Traefik setup)  
+This repository is **not**:
+
+- a full FEA framework,
+- a polished visualization tool,
+- or a production-ready solver.
+
+Instead, it focuses on:
+
+- correctness,
+- architectural clarity,
+- and understanding GPU-based numerical workflows in the browser.
+
+Further work (e.g. native `wgpu` backends, CLI tools, larger-scale benchmarks) is intentionally left out of this repository.
 
 ---
 
-## Why This Repo Exists
+## Status
 
-This repository serves as a focused technical portfolio showcasing:
+- WebGPU solver pipeline: **complete**
+- CPU ↔ GPU validation: **complete**
+- Performance tuning: **basic, exploratory**
+- Documentation: **engineering-focused**
 
-- Advanced use of WebGPU beyond rendering  
-- Practical numerical computing in the browser  
-- Clean Rust ↔ JS ↔ GPU integration  
-- Solver-oriented thinking applied to frontend technology  
+---
 
-It intentionally prioritizes **clarity, correctness, and architecture** over UI polish.
+## License
+
+MIT
