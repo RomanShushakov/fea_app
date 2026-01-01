@@ -1,0 +1,70 @@
+- name: Deploy fea-app (down -> clean -> copy -> up)
+  hosts: fea
+  gather_facts: false
+
+  vars:
+    remote_base_dir: /home/roman/workdir/fea-app
+    compose_file: "{{ remote_base_dir }}/docker-compose.yaml"
+
+  tasks:
+    - name: Ensure base directory exists
+      ansible.builtin.file:
+        path: "{{ remote_base_dir }}"
+        state: directory
+        mode: "0755"
+
+    # 1) Stop containers (ignore errors if nothing is running yet)
+    - name: docker compose down
+      ansible.builtin.command:
+        cmd: docker compose -f "{{ compose_file }}" down --remove-orphans
+        chdir: "{{ remote_base_dir }}"
+      register: compose_down
+      changed_when: true
+      failed_when: false
+
+    # 2) Remove previous version of files/folders
+    - name: Remove previous public/, traefik/, nginx.conf, docker-compose.yaml
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ remote_base_dir }}/public"
+        - "{{ remote_base_dir }}/traefik"
+        - "{{ remote_base_dir }}/nginx.conf"
+        - "{{ remote_base_dir }}/docker-compose.yaml"
+
+    # 3) Copy new version
+    # Recommended for directories: synchronize (rsync-like)
+    - name: Sync public/ directory
+      ansible.posix.synchronize:
+        src: "./public/"
+        dest: "{{ remote_base_dir }}/public/"
+        recursive: true
+        delete: false
+
+    - name: Sync traefik/ directory
+      ansible.posix.synchronize:
+        src: "./traefik/"
+        dest: "{{ remote_base_dir }}/traefik/"
+        recursive: true
+        delete: false
+
+    - name: Copy docker-compose.yaml
+      ansible.builtin.copy:
+        src: "./docker-compose.yaml"
+        dest: "{{ remote_base_dir }}/docker-compose.yaml"
+        mode: "0644"
+
+    - name: Copy nginx.conf
+      ansible.builtin.copy:
+        src: "./nginx.conf"
+        dest: "{{ remote_base_dir }}/nginx.conf"
+        mode: "0644"
+
+    # 4) Start containers again
+    - name: docker compose up -d
+      ansible.builtin.command:
+        cmd: docker compose -f "{{ compose_file }}" up -d --remove-orphans
+        chdir: "{{ remote_base_dir }}"
+      register: compose_up
+      changed_when: true
