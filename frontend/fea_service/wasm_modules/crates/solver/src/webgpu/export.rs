@@ -9,6 +9,7 @@ pub fn make_pcg_block_jacobi_csr_input_bundle_text(
     values_f32: &[f32],
     b_f32: &[f32],
     x0_f32: &[f32],
+    x_ref_f32: Option<&[f32]>,
     block_starts_usize: &[usize],
 ) -> String {
     fn write_u32_array(out: &mut String, name: &str, data: &[u32]) {
@@ -61,6 +62,10 @@ pub fn make_pcg_block_jacobi_csr_input_bundle_text(
 
     let block_starts_u32: Vec<u32> = block_starts_usize.iter().map(|&v| v as u32).collect();
     write_u32_array(&mut out, "block_starts_u32", &block_starts_u32);
+
+    if let Some(x_ref) = x_ref_f32 {
+        write_f32_array(&mut out, "x_ref_f32", x_ref);
+    }
 
     out
 }
