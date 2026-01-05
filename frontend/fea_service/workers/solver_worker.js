@@ -72,20 +72,38 @@ export const performGlobalAnalysis = (jobName, solver, maxIter) => {
     worker.removeEventListener("message", handlePerformGlobalAnalysisDirect);
   };
   const handlePerformGlobalAnalysisIterative = (message) => {
-    document.querySelector(EVENT_TARGET).dispatchEvent(
-      new CustomEvent(SOLVER_MESSAGE_EVENT_HEADER, {
-        bubbles: true,
-        composed: true,
-        detail: {
-          header: message.data.header,
-          job_name: message.data.job_name,
-          status: message.data.status,
-          message: message.data.message,
-          iterations: message.data.iterations,
-        },
-      })
-    );
-    worker.removeEventListener("message", handlePerformGlobalAnalysisIterative);
+    if (message.data.header !== "export_dataset") {
+      document.querySelector(EVENT_TARGET).dispatchEvent(
+        new CustomEvent(SOLVER_MESSAGE_EVENT_HEADER, {
+          bubbles: true,
+          composed: true,
+          detail: {
+            header: message.data.header,
+            job_name: message.data.job_name,
+            status: message.data.status,
+            message: message.data.message,
+            iterations: message.data.iterations,
+          },
+        })
+      );
+      worker.removeEventListener(
+        "message",
+        handlePerformGlobalAnalysisIterative
+      );
+    } else {
+      const blob = new Blob([message.data.text], {
+        type: "text/plain;charset=utf-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = message.data.filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
   };
   if (solver === "direct") {
     worker.addEventListener(
@@ -132,7 +150,8 @@ export const performGlobalAnalysis = (jobName, solver, maxIter) => {
       false
     );
     worker.postMessage({
-      header: PERFORM_GLOBAL_ANALYSIS_ITERATIVE_PCG_BLOCK_JACOBI_GPU_MESSAGE_HEADER,
+      header:
+        PERFORM_GLOBAL_ANALYSIS_ITERATIVE_PCG_BLOCK_JACOBI_GPU_MESSAGE_HEADER,
       job_name: jobName,
       max_iter: maxIter,
     });

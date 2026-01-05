@@ -36,9 +36,10 @@ mod pcg_update_scalars;
 mod pcg_update_scalars_exec;
 
 use crate::webgpu::{
-    block_jacobi_exec::BlockJacobiExecutor, buffers::encode_write_f32_into_storage_buffer_at_index,
-    dot_scalar_exec::DotScalarExecutor, pcg_update_scalars_exec::PcgUpdateScalarsExecutor,
+    block_jacobi_exec::BlockJacobiExecutor, buffers::encode_write_f32_into_storage_buffer_at_index, dot_scalar_exec::DotScalarExecutor, export::send_export_to_main_thread, pcg_update_scalars_exec::PcgUpdateScalarsExecutor
 };
+
+mod export;
 
 const NODE_DOF: usize = 6;
 const REL_TOL: f32 = 1e-4;
@@ -643,6 +644,20 @@ pub(crate) async fn find_ua_vector_iterative_pcg_block_jacobi_sparse_webgpu(
         n,
     );
     let mut u_a_values = vec![0.0f32; n];
+
+    let export_text = crate::webgpu::export::make_pcg_block_jacobi_csr_input_bundle_text(
+        csr.get_n_rows(),
+        csr.get_values().len(),
+        &row_ptr_u32,
+        &col_idx_u32,
+        &values_f32,
+        &b_values,
+        &u_a_values,
+        &block_starts,
+    );
+
+    // Send to main thread
+    send_export_to_main_thread("pcg_block_jacobi_dataset.txt", &export_text)?;
 
     let iterations = pcg_block_jacobi_csr_webgpu(
         &csr,
