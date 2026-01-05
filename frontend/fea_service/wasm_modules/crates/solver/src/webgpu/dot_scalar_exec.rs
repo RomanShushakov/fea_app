@@ -76,7 +76,12 @@ impl DotScalarExecutor {
         //
         // NOTE: only the *final* scalar needs COPY_SRC (for copy to readback),
         // but we keep COPY_SRC on output_buffer to simplify ping-pong.
-        let input_buffer = create_storage_buffer_f32(device, max_partials, "dot scratch input", 0)?;
+        let input_buffer = create_storage_buffer_f32(
+            device,
+            max_partials,
+            "dot scratch input",
+            gpu_buffer_usage::COPY_SRC,
+        )?;
         let output_buffer = create_storage_buffer_f32(
             device,
             max_partials,
