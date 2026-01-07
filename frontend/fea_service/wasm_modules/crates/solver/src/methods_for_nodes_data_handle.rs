@@ -50,7 +50,7 @@ pub fn extract_nodes_from_input_data(
         nodes_count += 1;
 
         fem.add_node(nodes_count, x, y, z)
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
 
         node_number_node_name_map.insert(nodes_count, node_name.to_string());
         node_name_node_number_map.insert(node_name.to_string(), nodes_count);

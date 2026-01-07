@@ -116,7 +116,7 @@ pub(super) fn extract_beams_from_input_data(
             let mut str_beam_element_number = format!("{}", props.beam_elements_group_number);
             (0..props.max_line_number.to_string().len() - serialized_line_number.len())
                 .for_each(|_| str_beam_element_number += "0");
-            str_beam_element_number += &format!("{serialized_line_number}");
+            str_beam_element_number += &serialized_line_number.to_string();
 
             match direction
             {

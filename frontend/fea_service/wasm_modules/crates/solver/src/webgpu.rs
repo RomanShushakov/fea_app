@@ -68,7 +68,7 @@ fn find_b_sparse_webgpu(
 
     for &(i, j, a_ij) in k_ab_triplets.iter() {
         let u_j = *u_b_vector.get_element_value(&Position(j, 0))?;
-        b[i] = b[i] - a_ij * u_j;
+        b[i] -= a_ij * u_j;
     }
 
     Ok(b)

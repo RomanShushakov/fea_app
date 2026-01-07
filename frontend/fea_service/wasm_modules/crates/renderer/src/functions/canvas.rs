@@ -48,8 +48,8 @@ pub fn add_denotation(ctx: &CTX, position: &[f32; 4], matrix: &[f32; 16],
 {
     let mut v = vec4::new_zero();
     let clip_space = vec4::transform_mat4(&mut v, position, matrix);
-    let pixel_x = (clip_space[0] / clip_space[3] * 0.5 + 0.5) * canvas_width as f32;
-    let pixel_y = (clip_space[1] / clip_space[3] * -0.5 + 0.5) * canvas_height as f32;
+    let pixel_x = (clip_space[0] / clip_space[3] * 0.5 + 0.5) * canvas_width;
+    let pixel_y = (clip_space[1] / clip_space[3] * -0.5 + 0.5) * canvas_height;
     ctx.fill_text(denotation, pixel_x as f64, pixel_y as f64).unwrap();
 }
 
@@ -115,7 +115,7 @@ pub fn add_color_bar_caption(
         }
         else
         {
-            caption_components += &format!("{component}");
+            caption_components += component.as_ref();
         }
     }
     ctx.fill_text(

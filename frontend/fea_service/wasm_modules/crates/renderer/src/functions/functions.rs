@@ -55,7 +55,7 @@ pub fn transform_u32_to_array_of_u8(x: u32) -> [u8; 4]
 
 pub fn transform_array_of_u8_to_u32(b: &[u8; 4]) -> u32
 {
-    ((b[0] as u32) << 24) + ((b[1] as u32) << 16) + ((b[2] as u32) << 8) + ((b[3] as u32) << 0)
+    ((b[0] as u32) << 24) + ((b[1] as u32) << 16) + ((b[2] as u32) << 8) + (b[3] as u32)
 }
 
 

@@ -55,7 +55,7 @@ impl Renderer
         {
             let Denotation { notation, center, color } = point_object_denotation;
             ctx.set_fill_style(&color.into());
-            add_denotation(&ctx,
+            add_denotation(ctx,
                 &[
                     center[0] * scale - shift[0] - 
                     self.props.drawn_point_object_denotation_shift / (1.0 + self.manipulation.d_scale),
@@ -73,7 +73,7 @@ impl Renderer
         {
             let Denotation { notation, center, color } = line_object_denotation;
             ctx.set_fill_style(&color.into());
-            add_denotation(&ctx,
+            add_denotation(ctx,
                 &[
                     center[0] * scale - shift[0],
                     center[1] * scale - shift[1] +
@@ -91,7 +91,7 @@ impl Renderer
         {
             let Denotation { notation, center, color } = surface_object_denotation;
             ctx.set_fill_style(&color.into());
-            add_denotation(&ctx,
+            add_denotation(ctx,
                 &[
                     center[0] * scale - shift[0],
                     center[1] * scale - shift[1],
@@ -202,349 +202,339 @@ impl Renderer
                     )
                 },
             };
-            vertices_coordinates.store(&gl, self.optional_vertex_buffer.as_ref()); 
-            vertices_is_to_scale.store(&gl, self.optional_is_to_scale_buffer.as_ref()); 
-            vertices_reference_points.store(&gl, self.optional_reference_point_buffer.as_ref()); 
-            vertices_displacements.store(&gl, self.optional_vertex_displacement_buffer.as_ref()); 
-            vertices_colors.store(&gl, self.optional_color_buffer.as_ref()); 
+            vertices_coordinates.store(gl, self.optional_vertex_buffer.as_ref()); 
+            vertices_is_to_scale.store(gl, self.optional_is_to_scale_buffer.as_ref()); 
+            vertices_reference_points.store(gl, self.optional_reference_point_buffer.as_ref()); 
+            vertices_displacements.store(gl, self.optional_vertex_displacement_buffer.as_ref()); 
+            vertices_colors.store(gl, self.optional_color_buffer.as_ref()); 
             gl.draw_arrays(mode, 0, count);  
         }
 
-        match gl_mode
-        {
-            GLMode::Visible =>
-            {
-                self.draw_scene_notations(&projection_matrix, &model_view_matrix, ctx);
+        if let GLMode::Visible = gl_mode {
+            self.draw_scene_notations(&projection_matrix, &model_view_matrix, ctx);
 
-                match self.scene.get_scene_state()
+            if let SceneState::Postprocessor((
+                    optional_result_plot,
+                    extreme_global_displacements_data,
+                    extreme_global_loads_data,
+                    extreme_elements_loads_data,
+                    
+                )) = self.scene.get_scene_state() {
+                match optional_result_plot
                 {
-                    SceneState::Postprocessor((
-                        optional_result_plot,
-                        extreme_global_displacements_data,
-                        extreme_global_loads_data,
-                        extreme_elements_loads_data,
-                        
-                    )) => 
+                    Some(ResultPlot::Displacements(_)) =>
                     {
-                        match optional_result_plot
+                        if let Some([min_u_result, max_u_result]) = 
+                            extreme_global_displacements_data.get_optional_extreme_u_f_result()
                         {
-                            Some(ResultPlot::Displacements(_)) =>
-                            {
-                                if let Some([min_u_result, max_u_result]) = 
-                                    extreme_global_displacements_data.get_optional_extreme_u_f_result()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "DISPLACEMENT",
-                                        &["U_RESULT"],
-                                        min_u_result, 
-                                        max_u_result, 
-                                        &self.props,
-                                    );
-                                }
-                                else
-                                {
-                                    return Err(JsValue::from("Renderer: There are no extreme global U displacement!"));
-                                }
-                            },
-                            Some(ResultPlot::GlobalForces) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_global_loads_data.get_optional_extreme_u_f()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "GLOBAL FORCE",
-                                        &["F_X, F_Y, F_Z"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::GlobalMoments) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_global_loads_data.get_optional_extreme_r_m()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "GLOBAL MOMENT",
-                                        &["M_X, M_Y, M_Z"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::ForceR) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_f_r()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["FORCE_R"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::ForceS) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_f_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["FORCE_S"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::ForceT) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_f_t()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["FORCE_T"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MomentR) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_m_r()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MOMENT_R"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MomentS) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_m_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MOMENT_S"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MomentT) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_m_t()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MOMENT_T"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MemForceR) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_mem_f_r()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MEMBRANE_FORCE_R"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MemForceS) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_mem_f_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MEMBRANE_FORCE_S"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::MemForceRS) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_mem_f_r_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["MEMBRANE_FORCE_R_S"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::BendMomentR) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_bend_m_r()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["BENDING_MOMENT_R"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::BendMomentS) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_bend_m_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["BENDING_MOMENT_S"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::BendMomentRS) => 
-                            {
-                                if let Some([min_m, max_m]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_bend_m_r_s()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["BENDING_MOMENT_R_S"],
-                                        min_m, 
-                                        max_m, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::ShearForceRT) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_shear_f_r_t()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["SHEAR_FORCE_R_T"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            Some(ResultPlot::ShearForceST) => 
-                            {
-                                if let Some([min_f, max_f]) = 
-                                    extreme_elements_loads_data.get_optional_extreme_shear_f_s_t()
-                                {
-                                    add_color_bar(ctx, width as f32, height as f32, &self.props);
-                                    add_color_bar_caption(
-                                        ctx, 
-                                        width as f32, 
-                                        height as f32,
-                                        "ELEMENT FORCE",
-                                        &["SHEAR_FORCE_S_T"],
-                                        min_f, 
-                                        max_f, 
-                                        &self.props,
-                                    );
-                                }
-                            },
-                            _ => ()
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "DISPLACEMENT",
+                                &["U_RESULT"],
+                                min_u_result, 
+                                max_u_result, 
+                                &self.props,
+                            );
                         }
-                    }
-                    _ => (),
+                        else
+                        {
+                            return Err(JsValue::from("Renderer: There are no extreme global U displacement!"));
+                        }
+                    },
+                    Some(ResultPlot::GlobalForces) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_global_loads_data.get_optional_extreme_u_f()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "GLOBAL FORCE",
+                                &["F_X, F_Y, F_Z"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::GlobalMoments) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_global_loads_data.get_optional_extreme_r_m()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "GLOBAL MOMENT",
+                                &["M_X, M_Y, M_Z"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::ForceR) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_f_r()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["FORCE_R"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::ForceS) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_f_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["FORCE_S"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::ForceT) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_f_t()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["FORCE_T"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MomentR) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_m_r()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MOMENT_R"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MomentS) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_m_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MOMENT_S"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MomentT) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_m_t()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MOMENT_T"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MemForceR) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_mem_f_r()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MEMBRANE_FORCE_R"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MemForceS) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_mem_f_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MEMBRANE_FORCE_S"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::MemForceRS) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_mem_f_r_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["MEMBRANE_FORCE_R_S"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::BendMomentR) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_bend_m_r()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["BENDING_MOMENT_R"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::BendMomentS) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_bend_m_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["BENDING_MOMENT_S"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::BendMomentRS) => 
+                    {
+                        if let Some([min_m, max_m]) = 
+                            extreme_elements_loads_data.get_optional_extreme_bend_m_r_s()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["BENDING_MOMENT_R_S"],
+                                min_m, 
+                                max_m, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::ShearForceRT) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_shear_f_r_t()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["SHEAR_FORCE_R_T"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    Some(ResultPlot::ShearForceST) => 
+                    {
+                        if let Some([min_f, max_f]) = 
+                            extreme_elements_loads_data.get_optional_extreme_shear_f_s_t()
+                        {
+                            add_color_bar(ctx, width as f32, height as f32, &self.props);
+                            add_color_bar_caption(
+                                ctx, 
+                                width as f32, 
+                                height as f32,
+                                "ELEMENT FORCE",
+                                &["SHEAR_FORCE_S_T"],
+                                min_f, 
+                                max_f, 
+                                &self.props,
+                            );
+                        }
+                    },
+                    _ => ()
                 }
-            },
-            _ => ()
+            }
         }
 
         Ok(())

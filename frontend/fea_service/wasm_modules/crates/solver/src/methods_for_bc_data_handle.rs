@@ -145,7 +145,7 @@ pub fn extract_udls_on_beams_from_input_data(
         }
 
         fem.add_uniformly_distributed_line_load(beam_element_number, dof_parameter, value)
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
     }
     Ok(())
 }
@@ -198,7 +198,7 @@ pub fn extract_udls_on_plates_from_input_data(
         }
 
         fem.add_uniformly_distributed_surface_load(plate_element_number, dof_parameter, value)
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
     }
     Ok(())
 }

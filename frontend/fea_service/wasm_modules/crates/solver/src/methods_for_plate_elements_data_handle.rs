@@ -114,7 +114,7 @@ pub fn extract_plate_elements_from_input_data(
             thickness,
             shear_factor,
         )
-        .map_err(|e| JsValue::from(e))?;
+        .map_err(JsValue::from)?;
     }
     Ok(())
 }

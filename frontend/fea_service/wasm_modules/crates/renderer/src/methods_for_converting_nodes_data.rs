@@ -60,12 +60,10 @@ fn get_extreme_analysis_result_values_array(
         .iter()
         .map(
             |value| 
-            Ok
-            (
-                value
+            value
                 .to_string()
                 .parse::<f32>()
-                .or(Err(JsValue::from(format!("Renderer: Extreme {key} value could not be converted to f32!"))))?)
+                .or(Err(JsValue::from(format!("Renderer: Extreme {key} value could not be converted to f32!"))))
             )
         .collect::<Result<Vec<f32>, JsValue>>()?;
     let extreme_analysis_result_values_array = convert_vec_to_array(extreme_analysis_result_values_vec);

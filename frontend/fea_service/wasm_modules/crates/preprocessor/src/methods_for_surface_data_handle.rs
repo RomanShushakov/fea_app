@@ -103,7 +103,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for surface deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -111,7 +111,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect number for surface deleted by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -123,7 +123,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No surfaces deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -171,7 +171,7 @@ impl Preprocessor
                 &[&points_coordinates[0], &points_coordinates[1], &points_coordinates[2], &points_coordinates[3]],
                 self.props.rel_tol,
                 self.props.abs_tol
-            ).map_err(|e| JsValue::from(e))?;
+            ).map_err(JsValue::from)?;
 
         if sorted_point_numbers.len() != 4
         {
@@ -185,12 +185,12 @@ impl Preprocessor
 
     pub(super) fn get_numbers_of_surfaces_passing_through_point(&self, point_number: u32) -> Vec<u32>
     {
-        let surface_numbers = self.surfaces.iter()
+        
+        self.surfaces.iter()
             .filter(|(_, surface)| 
                 surface.is_child_of_parent(&ParentKey::Point(point_number)))
             .map(|(surface_number, _)| *surface_number)
-            .collect::<Vec<u32>>();
-        surface_numbers
+            .collect::<Vec<u32>>()
     }
 
 
@@ -214,7 +214,7 @@ impl Preprocessor
 
         for surface_number in surface_numbers.iter()
         {
-            let surface = self.surfaces.get(&surface_number).expect("Surface is absent!");
+            let surface = self.surfaces.get(surface_number).expect("Surface is absent!");
             let points_coordinates = self.get_surface_vertices_expected_coordinates(surface,
                 point_number, x, y, z)?;
 
@@ -241,7 +241,7 @@ impl Preprocessor
 
         for surface_number in surface_numbers.iter().filter(|n| !non_planar_surface_numbers.contains(n))
         {
-            let surface = self.surfaces.get(&surface_number).expect("Surface is absent!");
+            let surface = self.surfaces.get(surface_number).expect("Surface is absent!");
             let points_coordinates = self.get_surface_vertices_expected_coordinates(surface,
                 point_number, x, y, z)?;
 
@@ -364,7 +364,7 @@ impl Preprocessor
         y: FEFloat, z: FEFloat, action_id: u32) -> Result<(), JsValue>
     {
         let surface_numbers = self.get_non_planar_surfaces_passing_through_point(point_number, x, y, z)?;
-        if surface_numbers.len() != 0
+        if !surface_numbers.is_empty()
         {
             let mut surfaces = Vec::new();
             for surface_number in surface_numbers.into_iter()
@@ -392,7 +392,7 @@ impl Preprocessor
         y: FEFloat, z: FEFloat, action_id: u32) -> Result<(), JsValue>
     {
         let surface_numbers = self.get_concave_planar_surfaces_passing_through_point(point_number, x, y, z)?;
-        if surface_numbers.len() != 0 
+        if !surface_numbers.is_empty() 
         {
             let mut surfaces = Vec::new();
             for surface_number in surface_numbers.into_iter()
@@ -598,20 +598,18 @@ impl Preprocessor
         if let Some(surface) = self.surfaces.get(&number)
         {
             if surface.is_property_assigned()
-            {
-                if !surface.is_property_name_same(property_name.to_string()) 
+                && !surface.is_property_name_same(property_name.to_string()) 
                 {
                     let error_message = format!("Another property has been already assigned to surface with \
                         number {number}!");
                     return Err(JsValue::from(error_message));
                 }
-            }
             Ok(())
         }
         else
         {
             let error_message = format!("Surface with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -668,18 +666,18 @@ impl Preprocessor
         {
             if surface.is_property_assigned()
             {
-                return Ok(());
+                Ok(())
             }
             else
             {
                 let error_message = format!("Mesh seed could not be set for surface {number}!");
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
         }
         else
         {
             let error_message = format!("Surface with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -696,9 +694,9 @@ impl Preprocessor
         self.clear_all_deleted_objects_by_action_id(action_id);
 
         let mut changed_surfaces = Vec::new();
-        for number in surface_numbers.into_iter()
+        for number in surface_numbers.iter()
         {
-            let surface = self.surfaces.get_mut(&number).expect("Surface is absent!");
+            let surface = self.surfaces.get_mut(number).expect("Surface is absent!");
             let mut changed_surface = surface.clone();
             changed_surface.set_status(Status::Changed(*number));
             changed_surfaces.push(changed_surface);
@@ -818,7 +816,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for surface changed by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Changed(n) =>
                 {
@@ -826,7 +824,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect number for surface changed by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -836,7 +834,7 @@ impl Preprocessor
                                 by action {}!", action_id);
                             return Err(JsValue::from(error_message));
                         }
-                        return Ok(());
+                        Ok(())
                     }
                 }
             }
@@ -844,7 +842,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No surfaces deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -855,19 +853,19 @@ impl Preprocessor
         {
             if surface.is_property_assigned()
             {
-                return Ok(());
+                Ok(())
             }
             else
             {
                 let error_message = format!("Uniformly distributed surface load could not be added to \
                     surface with number {number}!");
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
         }
         else
         {
             let error_message = format!("Surface with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

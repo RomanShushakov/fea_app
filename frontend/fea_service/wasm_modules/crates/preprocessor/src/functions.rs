@@ -57,7 +57,7 @@ pub fn find_projection_of_vector_a_perpendicular_to_vector_b(vec_a_components: &
 pub fn recursive_permutations<T>(seq: Vec<T>) -> Vec<Vec<T>>
     where T: Copy
 {
-    if seq.len() == 0
+    if seq.is_empty()
     {
         return vec![];
     }
@@ -88,7 +88,7 @@ pub fn recursive_permutations<T>(seq: Vec<T>) -> Vec<Vec<T>>
             permutations.push(current_permutation);
         }
     }
-    return permutations;
+    permutations
 }
 
 
@@ -99,7 +99,7 @@ pub fn are_all_numbers_unique<T>(ref_seq: &[T]) -> bool
     {
         let number = ref_seq[i - 1];
         let slice = &ref_seq[i..];
-        if slice.iter().any(|n| *n == number)
+        if slice.contains(&number)
         {
             return false;
         }

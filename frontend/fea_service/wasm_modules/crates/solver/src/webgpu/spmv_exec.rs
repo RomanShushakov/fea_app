@@ -120,7 +120,7 @@ impl SpmvExecutor {
 
         // One invocation computes one row.
         let workgroup_size = 256u32;
-        let groups_x = (self.n_rows + workgroup_size - 1) / workgroup_size;
+        let groups_x = self.n_rows.div_ceil(workgroup_size);
         compute_pass_encoder.dispatch_workgroups(groups_x);
 
         compute_pass_encoder.end();

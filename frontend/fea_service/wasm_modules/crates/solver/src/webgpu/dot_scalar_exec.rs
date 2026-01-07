@@ -68,7 +68,7 @@ impl DotScalarExecutor {
         let dot_reduce_pipeline = create_dot_reduce_pipeline(ctx)?;
 
         let workgroup_size = 256usize;
-        let max_partials = (n + workgroup_size - 1) / workgroup_size;
+        let max_partials = n.div_ceil(workgroup_size);
 
         // Scratch buffers for reductions:
         // - `input_buffer` receives partial sums from dot_partials pass
@@ -226,13 +226,13 @@ impl DotScalarExecutor {
             compute_pass_encoder.set_bind_group(0, Some(&dot_partials_bind_group));
 
             let workgroup_size = 256u32;
-            let groups_x = (n + workgroup_size - 1) / workgroup_size;
+            let groups_x = n.div_ceil(workgroup_size);
             compute_pass_encoder.dispatch_workgroups(groups_x);
             compute_pass_encoder.end();
         }
 
         // Number of partials produced by Pass 1.
-        let mut current_len: u32 = (n + 256u32 - 1) / 256u32;
+        let mut current_len: u32 = n.div_ceil(256u32);
 
         // ---------------------------------------------------------------------
         // Pass 2..k: reduce partials until one scalar remains
@@ -252,7 +252,7 @@ impl DotScalarExecutor {
                 current_output_buffer,
             );
 
-            let out_len = (current_len + 256u32 - 1) / 256u32;
+            let out_len = current_len.div_ceil(256u32);
 
             let compute_pass_desc = GpuComputePassDescriptor::new();
             let compute_pass_encoder =

@@ -55,7 +55,7 @@ impl Renderer
 
         ctx.set_fill_style(&self.props.canvas_axes_denotation_color.clone().into());
 
-        add_denotation(&ctx,
+        add_denotation(ctx,
             &[
                 1.0 + self.props.axis_x_denotation_shift_x, 
                 0.0 + self.props.axis_x_denotation_shift_y,
@@ -67,7 +67,7 @@ impl Renderer
             height as f32,
             "X",
         );
-        add_denotation(&ctx,
+        add_denotation(ctx,
             &[
                 0.0 + self.props.axis_y_denotation_shift_x, 
                 1.0 + self.props.axis_y_denotation_shift_y, 
@@ -79,7 +79,7 @@ impl Renderer
             height as f32, 
             "Y",
         );
-        add_denotation(&ctx,
+        add_denotation(ctx,
             &[
                 0.0 + self.props.axis_z_denotation_shift_x, 
                 0.0 + self.props.axis_z_denotation_shift_y,
@@ -94,7 +94,7 @@ impl Renderer
         ctx.stroke();
 
         ctx.set_fill_style(&self.props.hints_color.clone().into());
-        add_hints(&ctx, width as f32, height as f32, &self.props);
+        add_hints(ctx, width as f32, height as f32, &self.props);
         ctx.stroke();
 
         Ok(())
@@ -178,11 +178,11 @@ impl Renderer
                         )
                     },
                 };
-            vertices_coordinates.store(&gl, self.optional_vertex_buffer.as_ref()); 
-            vertices_is_to_scale.store(&gl, self.optional_is_to_scale_buffer.as_ref()); 
-            vertices_reference_points.store(&gl, self.optional_reference_point_buffer.as_ref()); 
-            vertices_displacements.store(&gl, self.optional_vertex_displacement_buffer.as_ref()); 
-            vertices_colors.store(&gl, self.optional_color_buffer.as_ref()); 
+            vertices_coordinates.store(gl, self.optional_vertex_buffer.as_ref()); 
+            vertices_is_to_scale.store(gl, self.optional_is_to_scale_buffer.as_ref()); 
+            vertices_reference_points.store(gl, self.optional_reference_point_buffer.as_ref()); 
+            vertices_displacements.store(gl, self.optional_vertex_displacement_buffer.as_ref()); 
+            vertices_colors.store(gl, self.optional_color_buffer.as_ref()); 
             gl.draw_arrays(mode, 0, count);  
         }
 

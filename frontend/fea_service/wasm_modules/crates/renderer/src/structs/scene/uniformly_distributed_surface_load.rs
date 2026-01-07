@@ -104,7 +104,7 @@ impl UniformlyDistributedSurfaceLoad
             for point_coordinates in grid_points_coordinates.iter()
             {
                 UniformlyDistributedSurfaceLoad::add_force_arrow(&color_for_selection, &mut primitives_for_selection, 
-                    &point_coordinates, &px_direction, props)?;
+                    point_coordinates, &px_direction, props)?;
             }
         }
 
@@ -117,7 +117,7 @@ impl UniformlyDistributedSurfaceLoad
             for point_coordinates in grid_points_coordinates.iter()
             {
                 UniformlyDistributedSurfaceLoad::add_force_arrow(&color_for_selection, &mut primitives_for_selection, 
-                    &point_coordinates, &py_direction, props)?;
+                    point_coordinates, &py_direction, props)?;
             }
         }
 
@@ -130,7 +130,7 @@ impl UniformlyDistributedSurfaceLoad
             for point_coordinates in grid_points_coordinates.iter()
             {
                 UniformlyDistributedSurfaceLoad::add_force_arrow(&color_for_selection, &mut primitives_for_selection, 
-                    &point_coordinates, &pz_direction, props)?;
+                    point_coordinates, &pz_direction, props)?;
             }
         }
 
@@ -254,7 +254,7 @@ impl UniformlyDistributedSurfaceLoad
 
     pub fn get_transformed_uid(&self) -> [u8; 4]
     {
-        self.transformed_uid.clone()
+        self.transformed_uid
     }
 }
 

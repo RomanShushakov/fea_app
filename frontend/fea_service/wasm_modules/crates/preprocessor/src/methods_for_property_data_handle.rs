@@ -99,14 +99,14 @@ impl Preprocessor
                 Status::Active | Status::Changed(_) =>
                 {
                     let error_message = &format!("Incorrect status for property deleted by action {action_id}!");
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
                     if n != name
                     {
                         let error_message = &format!("Incorrect name for property deleted by action {action_id}!");
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -118,7 +118,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No properties deleted by action {action_id}!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -277,11 +277,11 @@ impl Preprocessor
 
     fn get_properties_names_with_parent_key(&self, parent_key: &ParentKey) -> Vec<String>
     {
-        let properties_names = self.new_properties.iter()
+        
+        self.new_properties.iter()
             .filter(|(_, property)| property.is_child_of_parent(parent_key))
             .map(|(property_name, _)| property_name.to_string())
-            .collect::<Vec<String>>();
-        properties_names
+            .collect::<Vec<String>>()
     }
 
 

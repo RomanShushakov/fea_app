@@ -22,12 +22,10 @@ fn convert_analysis_result_value_to_extreme_values_array(
         .iter()
         .map(
             |value| 
-            Ok
-            (
-                value
+            value
                 .to_string()
                 .parse::<f32>()
-                .or(Err(JsValue::from(format!("Renderer: Extreme {key} value could not be converted to f32!"))))?)
+                .or(Err(JsValue::from(format!("Renderer: Extreme {key} value could not be converted to f32!"))))
             )
         .collect::<Result<Vec<f32>, JsValue>>()?;
     let extreme_analysis_result_value_array = convert_vec_to_array(extreme_analysis_result_value_vec);
@@ -266,13 +264,11 @@ pub fn update_truss_elements_data(
             .iter()
             .map(
                 |value| 
-                Ok
-                (
-                    value
+                value
                     .to_string()
                     .parse::<f32>()
                     .or(Err(JsValue::from("Renderer: Rotation matrix element value \
-                        could not be converted to f32!")))?)
+                        could not be converted to f32!")))
                 )
             .collect::<Result<Vec<f32>, JsValue>>()?;
         let rotation_matrix_elements = convert_vec_to_array(rotation_matrix_elements_vec);
@@ -339,13 +335,11 @@ pub fn update_beam_elements_data(
             .iter()
             .map(
                 |value| 
-                Ok
-                (
-                    value
+                value
                     .to_string()
                     .parse::<f32>()
                     .or(Err(JsValue::from("Renderer: Rotation matrix element value \
-                        could not be converted to f32!")))?)
+                        could not be converted to f32!")))
                 )
             .collect::<Result<Vec<f32>, JsValue>>()?;
         let rotation_matrix_elements = convert_vec_to_array(rotation_matrix_elements_vec);
@@ -556,13 +550,11 @@ pub fn update_plate_elements_data(
             .iter()
             .map(
                 |value| 
-                Ok
-                (
-                    value
+                value
                     .to_string()
                     .parse::<f32>()
                     .or(Err(JsValue::from("Renderer: Rotation matrix element value \
-                        could not be converted to f32!")))?)
+                        could not be converted to f32!")))
                 )
             .collect::<Result<Vec<f32>, JsValue>>()?;
         let rotation_matrix_elements = convert_vec_to_array(rotation_matrix_elements_vec);

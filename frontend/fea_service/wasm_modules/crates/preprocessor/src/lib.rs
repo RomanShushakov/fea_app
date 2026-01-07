@@ -2,7 +2,6 @@ use enums::CrossSection;
 use wasm_bindgen::prelude::*;
 use serde_json::json;
 use std::collections::HashMap;
-use rand;
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
 
@@ -838,7 +837,7 @@ impl Preprocessor
     pub(crate) fn generate_uid(&self) -> u32
     {
         let existed_uids = self.get_existed_uids();
-        let uid =
+        
         {
             let mut current_uid = rand::random::<u32>();
             while existed_uids.contains(&current_uid)
@@ -846,8 +845,7 @@ impl Preprocessor
                 current_uid = rand::random::<u32>();
             }
             current_uid
-        };
-        uid
+        }
     }
 
 

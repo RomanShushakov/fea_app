@@ -56,7 +56,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for beam section deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -64,7 +64,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect name for beam section deleted by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -76,7 +76,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No beam sections deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

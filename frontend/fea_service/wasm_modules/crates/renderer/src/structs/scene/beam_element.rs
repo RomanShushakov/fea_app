@@ -63,17 +63,17 @@ impl BeamElement
         let local_axis_direction_matrix = rotation_matrix
             .transpose()
             .multiply(&Vector3::create(&axis_direction))
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
         let local_axis_direction = [
             *local_axis_direction_matrix
                 .get_element_value(&Position(0, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
             *local_axis_direction_matrix
                 .get_element_value(&Position(1, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
             *local_axis_direction_matrix
                 .get_element_value(&Position(2, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
         ];
         Ok(local_axis_direction)
     }
@@ -95,15 +95,15 @@ impl BeamElement
             ];
 
             let axis_r_direction = BeamElement::transform_to_local_axis_direction(
-                [1.0, 0.0, 0.0], &rotation_matrix,
+                [1.0, 0.0, 0.0], rotation_matrix,
             )?;
 
             let axis_s_direction = BeamElement::transform_to_local_axis_direction(
-                [0.0, 1.0, 0.0], &rotation_matrix,
+                [0.0, 1.0, 0.0], rotation_matrix,
             )?;
 
             let axis_t_direction = BeamElement::transform_to_local_axis_direction(
-                [0.0, 0.0, 1.0], &rotation_matrix,
+                [0.0, 0.0, 1.0], rotation_matrix,
             )?;
 
             Ok(Some([center, axis_r_direction, axis_s_direction, axis_t_direction]))

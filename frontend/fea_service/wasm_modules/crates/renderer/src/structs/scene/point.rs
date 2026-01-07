@@ -93,9 +93,9 @@ impl Point
 
     pub fn get_coordinates(&self) -> [f32; 3]
     {
-        let coordinates = convert_vec_to_array(
-            self.primitives_for_selection.get_ref_points_coordinates().to_vec());
-        coordinates
+        
+        convert_vec_to_array(
+            self.primitives_for_selection.get_ref_points_coordinates().to_vec())
     }
 }
 
@@ -110,8 +110,8 @@ impl DenotationTrait for Point
 
     fn get_center(&self) -> [f32; 3] 
     {
-        let center = convert_vec_to_array(self.primitives_for_selection.get_ref_points_coordinates().to_vec());
-        center
+        
+        convert_vec_to_array(self.primitives_for_selection.get_ref_points_coordinates().to_vec())
     }
 
 

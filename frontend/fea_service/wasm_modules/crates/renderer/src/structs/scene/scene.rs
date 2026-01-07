@@ -175,14 +175,7 @@ impl Scene
                     {
                         Some(point) 
                     }
-                    else if let Some(point) = self.selected_points.get_mut(&transformed_uid)
-                    {
-                        Some(point)
-                    }
-                    else 
-                    {
-                        None    
-                    };
+                    else { self.selected_points.get_mut(&transformed_uid) };
 
                 if let Some(point) = optional_point
                 {
@@ -376,14 +369,7 @@ impl Scene
                     {
                         Some(line)
                     }   
-                    else if let Some(line) = self.selected_lines.get_mut(&transformed_uid)
-                    {
-                        Some(line)
-                    } 
-                    else
-                    {
-                        None
-                    };
+                    else { self.selected_lines.get_mut(&transformed_uid) };
                     
                 if let Some(line) = optional_line
                 {
@@ -420,13 +406,11 @@ impl Scene
                         }
                     }
                     else 
+                    if let Some(transformed_uid) = 
+                        line.get_optional_uniformly_distributed_line_load_transformed_uid()
                     {
-                        if let Some(transformed_uid) = 
-                            line.get_optional_uniformly_distributed_line_load_transformed_uid()
-                        {
-                            let _ = self.uniformly_distributed_line_loads.remove(&transformed_uid);
-                            let _ = self.selected_uniformly_distributed_line_loads.remove(&transformed_uid);
-                        }
+                        let _ = self.uniformly_distributed_line_loads.remove(&transformed_uid);
+                        let _ = self.selected_uniformly_distributed_line_loads.remove(&transformed_uid);
                     }
                 }
                 else
@@ -458,14 +442,7 @@ impl Scene
                         {
                             Some(line)
                         }
-                        else if let Some(line) = self.selected_lines.remove(&transformed_uid)
-                        {
-                            Some(line)
-                        }
-                        else
-                        {
-                            None
-                        }
+                        else { self.selected_lines.remove(&transformed_uid) }
                     };
 
                 if let Some(line) = optional_line
@@ -480,12 +457,12 @@ impl Scene
                             &uniformly_distributed_line_load_transformed_uid,
                         );
                     }
-                    return Ok(());
+                    Ok(())
                 }
                 else
                 {
                     let error_message = format!("Line with number {number} does not exist!");
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 }
             },
             SceneState::Postprocessor(_) => 
@@ -595,14 +572,7 @@ impl Scene
                     {
                         Some(surface)
                     }   
-                    else if let Some(surface) = self.selected_surfaces.get_mut(&transformed_uid)
-                    {
-                        Some(surface)
-                    } 
-                    else
-                    {
-                        None
-                    };
+                    else { self.selected_surfaces.get_mut(&transformed_uid) };
                     
                 if let Some(surface) = optional_surface
                 {
@@ -641,13 +611,11 @@ impl Scene
                         }
                     }
                     else 
+                    if let Some(transformed_uid) = 
+                        surface.get_optional_uniformly_distributed_surface_load_transformed_uid()
                     {
-                        if let Some(transformed_uid) = 
-                            surface.get_optional_uniformly_distributed_surface_load_transformed_uid()
-                        {
-                            let _ = self.uniformly_distributed_surface_loads.remove(&transformed_uid);
-                            let _ = self.selected_uniformly_distributed_surface_loads.remove(&transformed_uid);
-                        }
+                        let _ = self.uniformly_distributed_surface_loads.remove(&transformed_uid);
+                        let _ = self.selected_uniformly_distributed_surface_loads.remove(&transformed_uid);
                     }
                 }
                 else
@@ -679,14 +647,7 @@ impl Scene
                         {
                             Some(surface)
                         }
-                        else if let Some(surface) = self.selected_surfaces.remove(&transformed_uid)
-                        {
-                            Some(surface)
-                        }
-                        else
-                        {
-                            None
-                        }
+                        else { self.selected_surfaces.remove(&transformed_uid) }
                     };
 
                 if let Some(surface) = optional_surface
@@ -699,12 +660,12 @@ impl Scene
                         let _ = self.selected_uniformly_distributed_surface_loads.remove(
                             &uniformly_distributed_surface_load_transformed_uid);
                     }
-                    return Ok(());
+                    Ok(())
                 }
                 else
                 {
                     let error_message = format!("Surface with number {number} does not exist!");
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 }
             },
             SceneState::Postprocessor(_) => 
@@ -773,15 +734,7 @@ impl Scene
                     {
                         Some(concentrated_load)
                     }   
-                    else if let Some(concentrated_load) = 
-                        self.selected_concentrated_loads.get_mut(&transformed_uid)
-                    {
-                        Some(concentrated_load)
-                    } 
-                    else
-                    {
-                        None
-                    };
+                    else { self.selected_concentrated_loads.get_mut(&transformed_uid) };
                     
                 if let Some(concentrated_load) = optional_concentrated_load
                 {
@@ -814,13 +767,13 @@ impl Scene
                 if self.concentrated_loads.remove(&transformed_uid).is_some() || 
                     self.selected_concentrated_loads.remove(&transformed_uid).is_some()
                 {
-                    return Ok(());
+                    Ok(())
                 }
                 else
                 {
                     let error_message = format!("Concentrated load applied at point with number {point_number} \
                         does not exist!");
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 }
             },
             SceneState::Postprocessor(_) => 
@@ -890,15 +843,7 @@ impl Scene
                     {
                         Some(point_boundary_condition)
                     }   
-                    else if let Some(point_boundary_condition) = 
-                        self.selected_point_boundary_conditions.get_mut(&transformed_uid)
-                    {
-                        Some(point_boundary_condition)
-                    } 
-                    else
-                    {
-                        None
-                    };
+                    else { self.selected_point_boundary_conditions.get_mut(&transformed_uid) };
                     
                 if let Some(point_boundary_condition) = optional_point_boundary_condition
                 {
@@ -932,13 +877,13 @@ impl Scene
                 if self.point_boundary_conditions.remove(&transformed_uid).is_some() || 
                     self.selected_point_boundary_conditions.remove(&transformed_uid).is_some()
                 {
-                    return Ok(());
+                    Ok(())
                 }
                 else
                 {
                     let error_message = format!("Point boundary condition applied at point with number \
                         {point_number} does not exist!");
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 }
             },
             SceneState::Postprocessor(_) => 
@@ -1271,13 +1216,11 @@ impl Scene
             let _ = drop_selection.call0(&this);
         }
         else
+        if is_server_should_be_notified
         {
-            if is_server_should_be_notified
-            {
-                let detail = json!({ "selected_objects": selected_objects });
-                dispatch_custom_event(detail, &props.selected_object_event_name,
-                    &props.event_target)?;
-            }
+            let detail = json!({ "selected_objects": selected_objects });
+            dispatch_custom_event(detail, &props.selected_object_event_name,
+                &props.event_target)?;
         }
         Ok(())
     }   

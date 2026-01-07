@@ -411,8 +411,7 @@ impl Renderer
             let selection_rectangle_height = self.manipulation.cursor_coord_y - start_y;
             if selection_rectangle_width > 0 && selection_rectangle_height > 0
             {
-                let mut pixels = vec![0u8; (selection_rectangle_width *
-                    selection_rectangle_height).abs() as usize * 4];
+                let mut pixels = vec![0u8; (selection_rectangle_width * selection_rectangle_height).unsigned_abs() as usize * 4];
                 match gl.read_pixels_with_opt_u8_array(
                     start_x,
                     start_y,
@@ -428,8 +427,7 @@ impl Renderer
             }
             else if selection_rectangle_width < 0 && selection_rectangle_height > 0
             {
-                let mut pixels = vec![0u8; (selection_rectangle_width *
-                    selection_rectangle_height).abs() as usize * 4];
+                let mut pixels = vec![0u8; (selection_rectangle_width * selection_rectangle_height).unsigned_abs() as usize * 4];
                 match gl.read_pixels_with_opt_u8_array(
                     self.manipulation.cursor_coord_x,
                     start_y,
@@ -445,8 +443,7 @@ impl Renderer
             }
             else if selection_rectangle_width > 0 && selection_rectangle_height < 0
             {
-                let mut pixels = vec![0u8; (selection_rectangle_width *
-                    selection_rectangle_height).abs() as usize * 4];
+                let mut pixels = vec![0u8; (selection_rectangle_width * selection_rectangle_height).unsigned_abs() as usize * 4];
                 match gl.read_pixels_with_opt_u8_array(
                     start_x,
                     self.manipulation.cursor_coord_y,
@@ -462,8 +459,7 @@ impl Renderer
             }
             else if selection_rectangle_width < 0 && selection_rectangle_height < 0
             {
-                let mut pixels = vec![0u8; (selection_rectangle_width *
-                    selection_rectangle_height).abs() as usize * 4];
+                let mut pixels = vec![0u8; (selection_rectangle_width * selection_rectangle_height).unsigned_abs() as usize * 4];
                 match gl.read_pixels_with_opt_u8_array(
                     self.manipulation.cursor_coord_x,
                     self.manipulation.cursor_coord_y,

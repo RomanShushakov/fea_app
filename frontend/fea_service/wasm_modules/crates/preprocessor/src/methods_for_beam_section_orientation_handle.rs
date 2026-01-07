@@ -52,7 +52,7 @@ impl Preprocessor
             {
                 let error_message = &format!("Incorrect beam section local axis 1 direction \
                     deleted by action {}!", action_id);
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
             else
             {
@@ -63,7 +63,7 @@ impl Preprocessor
         {
             let error_message = &format!("No beam sections local axis 1 directions deleted by action {}!", 
                 action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

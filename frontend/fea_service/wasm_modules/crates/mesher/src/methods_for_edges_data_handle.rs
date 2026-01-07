@@ -41,17 +41,15 @@ pub(super) fn add_edge(
 {
     let (edge_number, direction) = get_edge_number(point_1_number.clone(), point_2_number.clone())?;
     if let Some(existed_mesh_seed) = edges.insert(edge_number.clone(), mesh_seed)
-    {
-        if existed_mesh_seed != mesh_seed
+        && existed_mesh_seed != mesh_seed
         {
             return Err(JsValue::from(&format!("Mesher: Different mesh seed values was set for edge {edge_number}!")));
         }
-    }
 
     let mut edge_nodes_numbers = Vec::new();
 
-    let node_1_coordinates = nodes.get(&point_1_number).expect("Node is absent!").1.clone();
-    let node_2_coordinates = nodes.get(&point_2_number).expect("Node is absent!").1.clone();
+    let node_1_coordinates = nodes.get(&point_1_number).expect("Node is absent!").1;
+    let node_2_coordinates = nodes.get(&point_2_number).expect("Node is absent!").1;
     match direction
     {
         Direction::Front => 

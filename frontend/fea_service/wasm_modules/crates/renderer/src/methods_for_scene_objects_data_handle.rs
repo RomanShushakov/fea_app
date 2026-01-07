@@ -427,7 +427,7 @@ impl Renderer
 
     pub fn preview_selected_objects(&mut self, uids: &[u32], drop_selection: &js_sys::Function) -> Result<(), JsValue>
     {
-        let selected_colors = uids.into_iter()
+        let selected_colors = uids.iter()
             .map(|uid| transform_u32_to_array_of_u8(*uid))
             .collect::<HashSet<[u8; 4]>>();
         self.scene.select_objects(&selected_colors, drop_selection, false, &self.props)?;

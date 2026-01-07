@@ -7,7 +7,8 @@ use extended_matrix::{Vector3, Matrix, VectorTrait, BasicOperationsTrait, Positi
 fn discretize_circle_on_plane(base_points_number: u32, radius: f32, abs_tol: f32) -> Vec<(f32, f32)>
 {
     let d_angle = 2.0 * PI / base_points_number as f32;
-    let local_coordinates = (0..base_points_number)
+    
+    (0..base_points_number)
         .map(|point_number|
             {
                 let angle = d_angle * point_number as f32;
@@ -23,8 +24,7 @@ fn discretize_circle_on_plane(base_points_number: u32, radius: f32, abs_tol: f32
                     };
                 (local_x, local_y)
             })
-        .collect::<Vec<(f32, f32)>>();
-    local_coordinates
+        .collect::<Vec<(f32, f32)>>()
 }
 
 
@@ -33,13 +33,13 @@ fn find_direction_vector_coordinates(coordinates: [f32; 3], rotation_matrix: &Ma
 {
     let local_direction_vector = Vector3::create(&coordinates);
     let transformed_direction_vector = rotation_matrix.multiply(&local_direction_vector)
-        .map_err(|e| JsValue::from(e))?;
+        .map_err(JsValue::from)?;
     let direction_vector_x_coordinate = transformed_direction_vector
-        .get_element_value(&Position(0, 0)).map_err(|e| JsValue::from(e))?;
+        .get_element_value(&Position(0, 0)).map_err(JsValue::from)?;
     let direction_vector_y_coordinate = transformed_direction_vector
-        .get_element_value(&Position(1, 0)).map_err(|e| JsValue::from(e))?;
+        .get_element_value(&Position(1, 0)).map_err(JsValue::from)?;
     let direction_vector_z_coordinate = transformed_direction_vector
-        .get_element_value(&Position(2, 0)).map_err(|e| JsValue::from(e))?;
+        .get_element_value(&Position(2, 0)).map_err(JsValue::from)?;
     Ok([*direction_vector_x_coordinate, *direction_vector_y_coordinate, *direction_vector_z_coordinate])
 }
 
@@ -49,7 +49,7 @@ fn extend_triangles_vertices_coordinates(vertex_coordinates: &[f32; 3], coordina
     -> Result<(), JsValue>
 {
     let direction_vector_coordinates_1 = 
-        find_direction_vector_coordinates(coordinates, &rotation_matrix)?;
+        find_direction_vector_coordinates(coordinates, rotation_matrix)?;
     triangles_vertices_coordinates.extend(&[
         vertex_coordinates[0] + direction_vector_coordinates_1[0],
         vertex_coordinates[1] + direction_vector_coordinates_1[1],
@@ -85,10 +85,10 @@ pub fn monochrome_cone(
         base_center_point_coordinates[2] - vertex_coordinates[2],
     ]);
     let oriented_direction_vector = Vector3::create(&[
-        direction_vector.norm().map_err(|e| JsValue::from(e))?, 0.0, 0.0
+        direction_vector.norm().map_err(JsValue::from)?, 0.0, 0.0
     ]);
     let rotation_matrix = oriented_direction_vector.rotation_matrix_to_align_with_vector(
-        &direction_vector, rel_tol, abs_tol).map_err(|e| JsValue::from(e))?;
+        &direction_vector, rel_tol, abs_tol).map_err(JsValue::from)?;
 
     let local_coordinates = discretize_circle_on_plane(base_points_number, radius, abs_tol);
 

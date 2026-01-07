@@ -42,7 +42,7 @@ impl Preprocessor
     fn check_line_through_points_absence(&self, point_1_number: u32, point_2_number: u32) 
         -> Result<(), JsValue>
     {
-        if self.lines.values().position(|line| line.are_points_same(point_1_number, point_2_number)).is_some()
+        if self.lines.values().any(|line| line.are_points_same(point_1_number, point_2_number))
         {
             let error_message = &format!("Line through points {:?}, {:?} already exists!", point_1_number, 
                 point_2_number);
@@ -69,7 +69,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for line deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -77,7 +77,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect number for line deleted by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -89,19 +89,19 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No lines deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
 
     pub(super) fn get_numbers_of_lines_passing_through_point(&self, point_number: u32) -> Vec<u32>
     {
-        let line_numbers = self.lines.iter()
+        
+        self.lines.iter()
             .filter(|(_, line)| 
                 line.is_child_of_parent(&ParentKey::Point(point_number)))
             .map(|(line_number, _)| *line_number)
-            .collect::<Vec<u32>>();
-        line_numbers
+            .collect::<Vec<u32>>()
     }
 
 
@@ -111,9 +111,9 @@ impl Preprocessor
         if !line_numbers.is_empty()
         {
             let mut lines = Vec::new();
-            for line_number in line_numbers.into_iter()
+            for line_number in line_numbers.iter()
             {
-                let mut line = self.lines.remove(&line_number).expect("Line is absent!");
+                let mut line = self.lines.remove(line_number).expect("Line is absent!");
                 line.set_status(Status::Deleted(*line_number));
                 lines.push(line);
             }
@@ -235,7 +235,7 @@ impl Preprocessor
         {   
             if let Some(local_axis_1_direction) = optional_local_axis_1_direction
             {
-                match self.check_local_axis_1_direction_not_parallel_to_line(number, &local_axis_1_direction)
+                match self.check_local_axis_1_direction_not_parallel_to_line(number, local_axis_1_direction)
                 {
                     Ok(transformed_local_axis_1_direction) => 
                         line.set_transformed_local_axis_1_direction(
@@ -254,43 +254,41 @@ impl Preprocessor
             line.notify_server(NotificationType::Update(is_action_id_should_be_increased), number, &self.props)?;
         }
         else
+        if let Some(mut lines) = self.changed_lines.remove(&action_id)
         {
-            if let Some(mut lines) = self.changed_lines.remove(&action_id)
+            if lines.len() != 1
             {
-                if lines.len() != 1
+                let error_message = &format!("Incorrect number of lines changed by action {}!",
+                    action_id);
+                return Err(JsValue::from(error_message));
+            }
+            let mut line = lines.remove(0);
+            match line.get_status()
+            {
+                Status::Active | Status::Deleted(_) =>
                 {
-                    let error_message = &format!("Incorrect number of lines changed by action {}!",
+                    let error_message = &format!("Incorrect status for line changed by action {}!",
                         action_id);
                     return Err(JsValue::from(error_message));
-                }
-                let mut line = lines.remove(0);
-                match line.get_status()
+                },
+                Status::Changed(n) =>
                 {
-                    Status::Active | Status::Deleted(_) =>
+                    if number != n
                     {
-                        let error_message = &format!("Incorrect status for line changed by action {}!",
-                            action_id);
+                        let error_message = &format!("Incorrect number for line changed by \
+                            action {}!", action_id);
                         return Err(JsValue::from(error_message));
-                    },
-                    Status::Changed(n) =>
-                    {
-                        if number != n
-                        {
-                            let error_message = &format!("Incorrect number for line changed by \
-                                action {}!", action_id);
-                            return Err(JsValue::from(error_message));
-                        }
-                        if !line.is_local_axis_1_direction_assigned()
-                        {
-                            let error_message = &format!("Incorrect local axis 1 direction for line \
-                                changed by action {action_id}!");
-                            return Err(JsValue::from(error_message));
-                        }
-                        line.set_status(Status::Active);
-                        self.lines.insert(n, line.clone());
-                        line.notify_server(NotificationType::Update(is_action_id_should_be_increased), number, 
-                            &self.props)?;
                     }
+                    if !line.is_local_axis_1_direction_assigned()
+                    {
+                        let error_message = &format!("Incorrect local axis 1 direction for line \
+                            changed by action {action_id}!");
+                        return Err(JsValue::from(error_message));
+                    }
+                    line.set_status(Status::Active);
+                    self.lines.insert(n, line.clone());
+                    line.notify_server(NotificationType::Update(is_action_id_should_be_increased), number, 
+                        &self.props)?;
                 }
             }
         }
@@ -345,20 +343,18 @@ impl Preprocessor
         if let Some(line) = self.lines.get(&number)
         {
             if line.is_property_assigned()
-            {
-                if !line.is_property_name_same(property_name.to_string()) 
+                && !line.is_property_name_same(property_name.to_string()) 
                 {
                     let error_message = format!("Another property has been already assigned to line with \
                         number {number}!");
                     return Err(JsValue::from(error_message));
                 }
-            }
             Ok(())
         }
         else
         {
             let error_message = format!("Line with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -378,7 +374,7 @@ impl Preprocessor
         else
         {
             let error_message = format!("Line with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -493,19 +489,19 @@ impl Preprocessor
                 }
                 let error_message = format!("Local axis 1 direction could not be assigned to \
                     line with number {number}!");
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
             else
             {
                 let error_message = format!("Local axis 1 direction could not be assigned to \
                     line with number {number}!");
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
         }
         else
         {
             let error_message = format!("Line with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -516,20 +512,18 @@ impl Preprocessor
         if let Some(line) = self.lines.get(&number)
         {
             if line.is_local_axis_1_direction_assigned()
-            {
-                if !line.is_local_axis_1_direction_same(local_axis_1_direction) 
+                && !line.is_local_axis_1_direction_same(local_axis_1_direction) 
                 {
                     let error_message = format!("Another local axis 1 direction has been already assigned to \
                         line with number {number}!");
                     return Err(JsValue::from(error_message));
                 }
-            }
             Ok(())
         }
         else
         {
             let error_message = format!("Line with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -705,9 +699,9 @@ impl Preprocessor
         self.clear_all_deleted_objects_by_action_id(action_id);
 
         let mut changed_lines = Vec::new();
-        for number in line_numbers.into_iter()
+        for number in line_numbers.iter()
         {
-            let line = self.lines.get_mut(&number).expect("Line is absent!");
+            let line = self.lines.get_mut(number).expect("Line is absent!");
             let mut changed_line = line.clone();
             changed_line.set_status(Status::Changed(*number));
             changed_lines.push(changed_line);
@@ -825,7 +819,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for line changed by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Changed(n) =>
                 {
@@ -833,7 +827,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect number for line changed by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -843,7 +837,7 @@ impl Preprocessor
                                 by action {}!", action_id);
                             return Err(JsValue::from(error_message));
                         }
-                        return Ok(());
+                        Ok(())
                     }
                 }
             }
@@ -851,7 +845,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No lines deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -862,19 +856,19 @@ impl Preprocessor
         {
             if line.is_local_axis_1_direction_assigned()
             {
-                return Ok(());
+                Ok(())
             }
             else
             {
                 let error_message = format!("Uniformly distributed line load could not be added to \
                     line with number {number}!");
-                return Err(JsValue::from(error_message));
+                Err(JsValue::from(error_message))
             }
         }
         else
         {
             let error_message = format!("Line with number {number} does not exist!");
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

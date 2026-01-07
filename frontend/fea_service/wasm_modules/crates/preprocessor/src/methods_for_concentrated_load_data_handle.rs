@@ -45,7 +45,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for concentrated load deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -53,7 +53,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect point number for concentrated load deleted \
                             by action {}!", action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -65,7 +65,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No concentrated loads deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

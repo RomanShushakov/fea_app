@@ -35,7 +35,7 @@ impl Preprocessor
 
     fn check_point_coordinates_absence(&self, x: FEFloat, y: FEFloat, z: FEFloat) -> Result<(), JsValue>
     {
-        if self.points.values().position(|point| point.are_coordinates_same(x, y, z)).is_some()
+        if self.points.values().any(|point| point.are_coordinates_same(x, y, z))
         {
             let error_message = &format!("Point with coordinates {:?}, {:?}, {:?} already exists!", x, y, z);
             return Err(JsValue::from(error_message));
@@ -54,7 +54,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for point deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -62,7 +62,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect number for point deleted by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -74,7 +74,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No points deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 
@@ -106,7 +106,7 @@ impl Preprocessor
         let mut points_coordinates = Vec::new();
         for point_number in point_numbers.iter()
         {
-            let point_coordinates = self.points.get(&point_number).expect("Point is absent!")
+            let point_coordinates = self.points.get(point_number).expect("Point is absent!")
                 .get_coordinates();
             points_coordinates.push(point_coordinates);
         }
@@ -166,12 +166,12 @@ impl Preprocessor
             {
                 let mut line = self.lines.get(&line_number).expect("Line is absent!").clone();
                 let mut changed_line = line.clone();
-                changed_line.set_status(Status::Changed(line_number.clone()));
+                changed_line.set_status(Status::Changed(line_number));
                 let optional_local_axis_1_direction = 
                     changed_line.get_ref_optional_local_axis_1_direction();
                 if let Some(local_axis_1_direction) = optional_local_axis_1_direction
                 {
-                    match self.check_local_axis_1_direction_not_parallel_to_line(line_number, &local_axis_1_direction)
+                    match self.check_local_axis_1_direction_not_parallel_to_line(line_number, local_axis_1_direction)
                     {
                         Ok(transformed_local_axis_1_direction) => 
                             line.set_transformed_local_axis_1_direction(

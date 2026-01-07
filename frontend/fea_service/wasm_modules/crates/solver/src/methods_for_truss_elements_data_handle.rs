@@ -94,7 +94,7 @@ pub fn extract_truss_elements_from_input_data(
             area,
             area_2,
         )
-        .map_err(|e| JsValue::from(e))?;
+        .map_err(JsValue::from)?;
     }
     Ok(())
 }

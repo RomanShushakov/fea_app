@@ -113,12 +113,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             truss_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_r) = 
                             truss_element_primitives.optional_primitives_force_r
@@ -131,12 +129,10 @@ impl Scene
                         primitives += truss_element_primitives.basic_primitives;
                         if let Some(primitives_local_axes) = 
                             truss_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     },
                 }
             }
@@ -154,12 +150,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_truss_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_r) = 
                             selected_truss_element_primitives.optional_primitives_force_r
@@ -171,12 +165,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_truss_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     }
                 }
             }
@@ -213,12 +205,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_r) = 
                             beam_element_primitives.optional_primitives_force_r
@@ -232,12 +222,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_s) = 
                             beam_element_primitives.optional_primitives_force_s
@@ -251,12 +239,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_t) = 
                             beam_element_primitives.optional_primitives_force_t
@@ -270,12 +256,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_r) = 
                             beam_element_primitives.optional_primitives_moment_r
@@ -289,12 +273,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_s) = 
                             beam_element_primitives.optional_primitives_moment_s
@@ -308,12 +290,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_t) = 
                             beam_element_primitives.optional_primitives_moment_t
@@ -326,12 +306,10 @@ impl Scene
                         primitives += beam_element_primitives.basic_primitives;
                         if let Some(primitives_local_axes) = 
                             beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     },
                 }
             }
@@ -349,12 +327,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_r) = 
                             selected_beam_element_primitives.optional_primitives_force_r
@@ -366,12 +342,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_s) = 
                             selected_beam_element_primitives.optional_primitives_force_s
@@ -383,12 +357,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_force_t) = 
                             selected_beam_element_primitives.optional_primitives_force_t
@@ -400,12 +372,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_r) = 
                             selected_beam_element_primitives.optional_primitives_moment_r
@@ -417,12 +387,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_s) = 
                             selected_beam_element_primitives.optional_primitives_moment_s
@@ -434,12 +402,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_moment_t) = 
                             selected_beam_element_primitives.optional_primitives_moment_t
@@ -451,12 +417,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_beam_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     },
                 }
             }
@@ -493,12 +457,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_r) = 
                             plate_element_primitives.optional_primitives_mem_force_r
@@ -512,12 +474,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_s) = 
                             plate_element_primitives.optional_primitives_mem_force_s
@@ -531,12 +491,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_r_s) = 
                             plate_element_primitives.optional_primitives_mem_force_r_s
@@ -550,12 +508,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_r) = 
                             plate_element_primitives.optional_primitives_bend_moment_r
@@ -569,12 +525,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_s) = 
                             plate_element_primitives.optional_primitives_bend_moment_s
@@ -588,12 +542,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_r_s) = 
                             plate_element_primitives.optional_primitives_bend_moment_r_s
@@ -607,12 +559,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_shear_force_r_t) = 
                             plate_element_primitives.optional_primitives_shear_force_r_t
@@ -626,12 +576,10 @@ impl Scene
 
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_shear_force_s_t) = 
                             plate_element_primitives.optional_primitives_shear_force_s_t
@@ -644,12 +592,10 @@ impl Scene
                         primitives += plate_element_primitives.basic_primitives;
                         if let Some(primitives_local_axes) = 
                             plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     },
                 }
             }
@@ -667,12 +613,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_r) = 
                             selected_plate_element_primitives.optional_primitives_mem_force_r
@@ -684,12 +628,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_s) = 
                             selected_plate_element_primitives.optional_primitives_mem_force_s
@@ -701,12 +643,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_mem_force_r_s) = 
                             selected_plate_element_primitives.optional_primitives_mem_force_r_s
@@ -718,12 +658,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_r) = 
                             selected_plate_element_primitives.optional_primitives_bend_moment_r
@@ -735,12 +673,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_s) = 
                             selected_plate_element_primitives.optional_primitives_bend_moment_s
@@ -752,12 +688,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_bend_moment_r_s) = 
                             selected_plate_element_primitives.optional_primitives_bend_moment_r_s
@@ -769,12 +703,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_shear_force_r_t) = 
                             selected_plate_element_primitives.optional_primitives_shear_force_r_t
@@ -786,12 +718,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
 
                         if let Some(primitives_shear_force_s_t) = 
                             selected_plate_element_primitives.optional_primitives_shear_force_s_t
@@ -803,12 +733,10 @@ impl Scene
                     {
                         if let Some(primitives_local_axes) = 
                             selected_plate_element_primitives.optional_primitives_local_axes
-                        {
-                            if manipulation.is_local_axes_visible
+                            && manipulation.is_local_axes_visible
                             {
                                 primitives += primitives_local_axes;
                             }
-                        }
                     },
                 }
             }

@@ -22,7 +22,7 @@ impl ActionsRouter
             .or(Err(JsValue::from("Actions router: Add point action: \
                 Point number could not be converted to u32!")))?;
 
-        if number > self.props.max_point_number as u32
+        if number > self.props.max_point_number
         {
             return Err(JsValue::from(format!("Actions router: Add point action: Point number could \
                 not be greater than {}!", self.props.max_point_number)));
@@ -150,7 +150,7 @@ impl ActionsRouter
             .or(Err(JsValue::from("Actions router: Add line action: \
                 Line number could not be converted to u32!")))?;
 
-        if number > self.props.max_line_number as u32
+        if number > self.props.max_line_number
         {
             return Err(JsValue::from(format!("Actions router: Add line action: Line number could \
                 not be greater than {}!", self.props.max_line_number)));
@@ -259,7 +259,7 @@ impl ActionsRouter
             .or(Err(JsValue::from("Actions router: Add surface action: \
                 Surface number could not be converted to u32!")))?;
 
-        if number > self.props.max_surface_number as u32
+        if number > self.props.max_surface_number
         {
             return Err(JsValue::from(format!("Actions router: Add surface action: Surface number could \
                 not be greater than {}!", self.props.max_surface_number)));

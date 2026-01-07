@@ -30,21 +30,17 @@ impl Scene
                 primitives += line_primitives.basic_primitives;
                 if let Some(primitives_local_axis_1_direction) = 
                     line_primitives.optional_primitives_local_axis_1_direction
-                {
-                    if manipulation.is_beam_section_orientation_visible
+                    && manipulation.is_beam_section_orientation_visible
                     {
                         primitives += primitives_local_axis_1_direction;
                     }
-                }
 
                 if let Some(primitives_mesh_seed) = 
                     line_primitives.optional_primitives_mesh_seed
-                {
-                    if manipulation.is_mesh_seed_visible
+                    && manipulation.is_mesh_seed_visible
                     {
                         primitives += primitives_mesh_seed;
                     }
-                }
             }
             for selected_line in self.selected_lines.values()
             {
@@ -52,21 +48,17 @@ impl Scene
                 primitives += selected_line_primitives.basic_primitives;
                 if let Some(primitives_local_axis_1_direction) = 
                     selected_line_primitives.optional_primitives_local_axis_1_direction
-                {
-                    if manipulation.is_beam_section_orientation_visible
+                    && manipulation.is_beam_section_orientation_visible
                     {
                         primitives += primitives_local_axis_1_direction;
                     }
-                }
 
                 if let Some(primitives_mesh_seed) = 
                     selected_line_primitives.optional_primitives_mesh_seed
-                {
-                    if manipulation.is_mesh_seed_visible
+                    && manipulation.is_mesh_seed_visible
                     {
                         primitives += primitives_mesh_seed;
                     }
-                }
             }
         }
 
@@ -88,13 +80,11 @@ impl Scene
                             primitives += primitives_edges_1_3.clone();
                         }
                         if manipulation.is_mesh_seed_visible
-                        {
-                            if let Some(primitives_mesh_seed_edges_1_3) = 
+                            && let Some(primitives_mesh_seed_edges_1_3) = 
                                 surface_primitives.optional_primitives_mesh_seed_edges_1_3
                             {
                                 primitives += primitives_mesh_seed_edges_1_3.clone();
-                            }
-                        }    
+                            }    
                     }
                     if manipulation.is_surface_edges_2_4_visible
                     {
@@ -103,21 +93,17 @@ impl Scene
                             primitives += primitives_edges_2_4.clone();
                         }
                         if manipulation.is_mesh_seed_visible
-                        {
-                            if let Some(primitives_mesh_seed_edges_2_4) = 
+                            && let Some(primitives_mesh_seed_edges_2_4) = 
                                 surface_primitives.optional_primitives_mesh_seed_edges_2_4
                             {
                                 primitives += primitives_mesh_seed_edges_2_4.clone();
-                            }
-                        }   
+                            }   
                     }
                     if manipulation.is_surface_normal_visible
-                    {
-                        if let Some(primitives_normal) = surface_primitives.optional_primitives_normal
+                        && let Some(primitives_normal) = surface_primitives.optional_primitives_normal
                         {
                             primitives += primitives_normal.clone();
                         }
-                    }
                 }
             }
             for selected_surface in self.selected_surfaces.values()
@@ -139,13 +125,11 @@ impl Scene
                             primitives += primitives_edges_1_3.clone();
                         }
                         if manipulation.is_mesh_seed_visible
-                        {
-                            if let Some(primitives_mesh_seed_edges_1_3) = 
+                            && let Some(primitives_mesh_seed_edges_1_3) = 
                                 selected_surface_primitives.optional_primitives_mesh_seed_edges_1_3
                             {
                                 primitives += primitives_mesh_seed_edges_1_3.clone();
-                            }
-                        }    
+                            }    
                     }
                     if manipulation.is_surface_edges_2_4_visible
                     {
@@ -155,21 +139,17 @@ impl Scene
                             primitives += primitives_edges_2_4.clone();
                         }
                         if manipulation.is_mesh_seed_visible
-                        {
-                            if let Some(primitives_mesh_seed_edges_2_4) = 
+                            && let Some(primitives_mesh_seed_edges_2_4) = 
                                 selected_surface_primitives.optional_primitives_mesh_seed_edges_2_4
                             {
                                 primitives += primitives_mesh_seed_edges_2_4.clone();
-                            }
-                        }   
+                            }   
                     }
                     if manipulation.is_surface_normal_visible
-                    {
-                        if let Some(primitives_normal) = selected_surface_primitives.optional_primitives_normal
+                        && let Some(primitives_normal) = selected_surface_primitives.optional_primitives_normal
                         {
                             primitives += primitives_normal.clone();
                         }
-                    }
                 }
             }
         }

@@ -58,17 +58,17 @@ impl TrussElement
         let local_axis_direction_matrix = rotation_matrix
             .transpose()
             .multiply(&Vector3::create(&axis_direction))
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
         let local_axis_direction = [
             *local_axis_direction_matrix
                 .get_element_value(&Position(0, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
             *local_axis_direction_matrix
                 .get_element_value(&Position(1, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
             *local_axis_direction_matrix
                 .get_element_value(&Position(2, 0))
-                .map_err(|e| JsValue::from(e))?,
+                .map_err(JsValue::from)?,
         ];
         Ok(local_axis_direction)
     }
@@ -195,7 +195,7 @@ impl TrussElement
             if let Some(rotation_matrix) = optional_rotation_matrix
             {
                 let axis_r_direction = TrussElement::transform_to_local_axis_direction(
-                    [1.0, 0.0, 0.0], &rotation_matrix,
+                    [1.0, 0.0, 0.0], rotation_matrix,
                 )?;
 
                 let norm = props.local_axis_line_length / 

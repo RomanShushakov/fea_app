@@ -65,7 +65,7 @@ pub(super) fn extract_trusses_from_input_data(
         let mut str_truss_element_number = format!("{}", props.truss_elements_group_number);
         (0..props.max_line_number.to_string().len() - serialized_line_number.len())
             .for_each(|_| str_truss_element_number += "0");
-        str_truss_element_number += &format!("{serialized_line_number}");
+        str_truss_element_number += &serialized_line_number.to_string();
         let truss_element_number = str_truss_element_number
             .parse::<u32>()
             .or(Err(JsValue::from("Mesher: Truss element number could not be converted to u32!")))?;

@@ -14,7 +14,7 @@ pub use cs_axes::{add_cs_axes_lines, add_cs_axes_caps};
 mod functions;
 pub use functions::
 {
-    log, dispatch_custom_event, transform_u32_to_array_of_u8, transform_array_of_u8_to_u32, convert_vec_to_array,
+    dispatch_custom_event, transform_u32_to_array_of_u8, convert_vec_to_array,
     convert_slice_to_array, find_grid_points_coordinates, get_value_coeff, move_selected_objects_into_regular,
     move_rc_selected_objects_into_rc_regular, move_regular_object_into_selected_objects,
     move_rc_regular_object_into_rc_selected_objects,

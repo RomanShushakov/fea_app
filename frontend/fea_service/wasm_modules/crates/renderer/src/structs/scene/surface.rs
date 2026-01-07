@@ -603,7 +603,7 @@ impl Surface
 
     pub fn update_surface_normal(&mut self, normal: &[f32], props: &Props) -> Result<(), JsValue>
     {
-        let direction: [f32; 3] = convert_slice_to_array(&normal);
+        let direction: [f32; 3] = convert_slice_to_array(normal);
         let norm = props.surface_normal_line_length / 
             direction.iter().fold(0.0, |acc, x| acc + x * x).sqrt();
         let center = self.get_center();
@@ -801,15 +801,15 @@ impl DenotationTrait for Surface
     {
         let triangles_vertices_coordinates: [f32; 18] = convert_vec_to_array(self.primitives_for_selection
             .get_ref_triangles_vertices_coordinates().to_vec());
-        let center = [
+        
+        [
             (triangles_vertices_coordinates[0] + triangles_vertices_coordinates[3] + 
                 triangles_vertices_coordinates[6] + triangles_vertices_coordinates[12]) / 4.0,
             (triangles_vertices_coordinates[1] + triangles_vertices_coordinates[4] + 
                 triangles_vertices_coordinates[7] + triangles_vertices_coordinates[13]) / 4.0,
             (triangles_vertices_coordinates[2] + triangles_vertices_coordinates[5] + 
                 triangles_vertices_coordinates[8] + triangles_vertices_coordinates[14]) / 4.0,
-        ];
-        center
+        ]
     }
 
 

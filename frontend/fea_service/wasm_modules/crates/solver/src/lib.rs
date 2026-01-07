@@ -266,7 +266,7 @@ impl Solver {
         let extracted_global_analysis_result_data = self
             .fem
             .extract_global_analysis_result()
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
 
         let mut global_analysis_result_data: HashMap<&str, [FEFloat; 12]> = HashMap::new();
         let mut extreme_global_displacements: HashMap<&str, [FEFloat; 2]> = HashMap::new();
@@ -422,7 +422,7 @@ impl Solver {
         let extracted_elements_analysis_result_data = self
             .fem
             .extract_elements_analysis_result()
-            .map_err(|e| JsValue::from(e))?;
+            .map_err(JsValue::from)?;
 
         let mut extreme_elements_loads: HashMap<&str, [FEFloat; 2]> = HashMap::new();
         let mut truss_elements_analysis_result_data = HashMap::new();
@@ -460,7 +460,7 @@ impl Solver {
                 let rotation_matrix_elements = self
                     .fem
                     .get_truss_rotation_matrix_elements(*element_number)
-                    .map_err(|e| JsValue::from(e))?;
+                    .map_err(JsValue::from)?;
 
                 rotation_matrix_elements
                     .iter()
@@ -485,7 +485,7 @@ impl Solver {
                 let rotation_matrix_elements = self
                     .fem
                     .get_beam_rotation_matrix_elements(*element_number)
-                    .map_err(|e| JsValue::from(e))?;
+                    .map_err(JsValue::from)?;
 
                 rotation_matrix_elements
                     .iter()
@@ -514,7 +514,7 @@ impl Solver {
                 let rotation_matrix_elements = self
                     .fem
                     .get_plate_rotation_matrix_elements(*element_number)
-                    .map_err(|e| JsValue::from(e))?;
+                    .map_err(JsValue::from)?;
 
                 rotation_matrix_elements
                     .iter()

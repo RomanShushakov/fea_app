@@ -272,7 +272,7 @@ impl UniformlyDistributedLineLoad
 
     pub fn get_transformed_uid(&self) -> [u8; 4]
     {
-        self.transformed_uid.clone()
+        self.transformed_uid
     }
 }
 

@@ -1037,7 +1037,7 @@ impl ActionsRouter
             let uid = generate_uid(&self.action_pool);
             let action_in_pool = ActionInPool::create(action.clone(), add_to_active_actions, is_redo);
             self.action_pool.insert(uid, action_in_pool);
-            return uid;
+            uid
         };
 
         let error_message = "Actions router: Handle current action: There are no action data!";
@@ -2292,222 +2292,222 @@ impl ActionsRouter
         let mut is_redo = false;
         if let Some(point_data) = serialized_message.get(&self.props.add_point_message_header)
         {
-            self.handle_add_point_message(&point_data)?;
+            self.handle_add_point_message(point_data)?;
         }
         else if let Some(point_data) = serialized_message.get(&self.props.update_point_message_header)
         {
-            self.handle_update_point_message(&point_data)?;
+            self.handle_update_point_message(point_data)?;
         }
         else if let Some(point_data) = serialized_message.get(&self.props.delete_point_message_header)
         {
-            self.handle_delete_point_message(&point_data)?;
+            self.handle_delete_point_message(point_data)?;
         }
         else if let Some(line_data) = serialized_message.get(&self.props.add_line_message_header)
         {
-            self.handle_add_line_message(&line_data)?;
+            self.handle_add_line_message(line_data)?;
         }
         else if let Some(line_data) = serialized_message.get(&self.props.update_line_message_header)
         {
-            self.handle_update_line_message(&line_data)?;
+            self.handle_update_line_message(line_data)?;
         }
         else if let Some(line_data) = serialized_message.get(&self.props.delete_line_message_header)
         {
-            self.handle_delete_line_message(&line_data)?;
+            self.handle_delete_line_message(line_data)?;
         }
         else if let Some(surface_data) = serialized_message.get(&self.props.add_surface_message_header)
         {
-            self.handle_add_surface_message(&surface_data)?;
+            self.handle_add_surface_message(surface_data)?;
         }
         else if let Some(surface_data) = serialized_message.get(&self.props.update_surface_message_header)
         {
-            self.handle_update_surface_message(&surface_data)?;
+            self.handle_update_surface_message(surface_data)?;
         }
         else if let Some(surface_data) = serialized_message
             .get(&self.props.rotate_surface_vertices_clockwise_message_header)
         {
-            self.handle_rotate_surface_vertices_clockwise_message(&surface_data)?;
+            self.handle_rotate_surface_vertices_clockwise_message(surface_data)?;
         }
         else if let Some(surface_data) = serialized_message
             .get(&self.props.rotate_surface_vertices_counter_clockwise_message_header)
         {
-            self.handle_rotate_surface_vertices_counter_clockwise_message(&surface_data)?;
+            self.handle_rotate_surface_vertices_counter_clockwise_message(surface_data)?;
         }
         else if let Some(surface_data) = serialized_message
             .get(&self.props.flip_surface_normal_axis_message_header)
         {
-            self.handle_flip_surface_normal_axis_message(&surface_data)?;
+            self.handle_flip_surface_normal_axis_message(surface_data)?;
         }
         else if let Some(surface_data) = serialized_message.get(&self.props.delete_surface_message_header)
         {
-            self.handle_delete_surface_message(&surface_data)?;
+            self.handle_delete_surface_message(surface_data)?;
         }
         else if let Some(material_data) = serialized_message.get(&self.props.add_material_message_header)
         {
-            self.handle_add_material_message(&material_data)?;
+            self.handle_add_material_message(material_data)?;
         }
         else if let Some(material_data) = serialized_message.get(&self.props.update_material_message_header)
         {
-            self.handle_update_material_message(&material_data)?;
+            self.handle_update_material_message(material_data)?;
         }
         else if let Some(material_data) = serialized_message.get(&self.props.delete_material_message_header)
         {
-            self.handle_delete_material_message(&material_data)?;
+            self.handle_delete_material_message(material_data)?;
         }
         else if let Some(truss_section_data) = serialized_message.get(&self.props.add_truss_section_message_header)
         {
-            self.handle_add_truss_section_message(&truss_section_data)?;
+            self.handle_add_truss_section_message(truss_section_data)?;
         }
         else if let Some(truss_section_data) = serialized_message.get(&self.props.update_truss_section_message_header)
         {
-            self.handle_update_truss_section_message(&truss_section_data)?;
+            self.handle_update_truss_section_message(truss_section_data)?;
         }
         else if let Some(truss_section_data) = serialized_message.get(&self.props.delete_truss_section_message_header)
         {
-            self.handle_delete_truss_section_message(&truss_section_data)?;
+            self.handle_delete_truss_section_message(truss_section_data)?;
         }
         else if let Some(beam_section_data) = serialized_message.get(&self.props.add_beam_section_message_header)
         {
-            self.handle_add_beam_section_message(&beam_section_data)?;
+            self.handle_add_beam_section_message(beam_section_data)?;
         }
         else if let Some(beam_section_data) = serialized_message.get(&self.props.update_beam_section_message_header)
         {
-            self.handle_update_beam_section_message(&beam_section_data)?;
+            self.handle_update_beam_section_message(beam_section_data)?;
         }
         else if let Some(beam_section_data) = serialized_message.get(&self.props.delete_beam_section_message_header)
         {
-            self.handle_delete_beam_section_message(&beam_section_data)?;
+            self.handle_delete_beam_section_message(beam_section_data)?;
         }
         else if let Some(plate_section_data) = serialized_message.get(&self.props.add_plate_section_message_header)
         {
-            self.handle_add_plate_section_message(&plate_section_data)?;
+            self.handle_add_plate_section_message(plate_section_data)?;
         }
         else if let Some(plate_section_data) = serialized_message.get(&self.props.update_plate_section_message_header)
         {
-            self.handle_update_plate_section_message(&plate_section_data)?;
+            self.handle_update_plate_section_message(plate_section_data)?;
         }
         else if let Some(plate_section_data) = serialized_message.get(&self.props.delete_plate_section_message_header)
         {
-            self.handle_delete_plate_section_message(&plate_section_data)?;
+            self.handle_delete_plate_section_message(plate_section_data)?;
         }
         else if let Some(properties_data) = serialized_message.get(&self.props.add_properties_message_header)
         {
-            self.handle_add_properties_message(&properties_data)?;
+            self.handle_add_properties_message(properties_data)?;
         }
         else if let Some(properties_data) = serialized_message.get(&self.props.update_properties_message_header)
         {
-            self.handle_update_properties_message(&properties_data)?;
+            self.handle_update_properties_message(properties_data)?;
         }
         else if let Some(properties_data) = serialized_message.get(&self.props.delete_properties_message_header)
         {
-            self.handle_delete_properties_message(&properties_data)?;
+            self.handle_delete_properties_message(properties_data)?;
         }
         else if let Some(assigned_properties_to_lines_data) = serialized_message
             .get(&self.props.assign_properties_to_lines_message_header)
         {
-            self.handle_assign_properties_to_lines_message(&assigned_properties_to_lines_data)?;
+            self.handle_assign_properties_to_lines_message(assigned_properties_to_lines_data)?;
         }
         else if let Some(local_axis_1_direction_data) = serialized_message
             .get(&self.props.add_beam_section_local_axis_1_direction_message_header)
         {
             self.handle_add_beam_section_local_axis_1_direction_message(
-                &local_axis_1_direction_data)?;
+                local_axis_1_direction_data)?;
         }
         else if let Some(local_axis_1_direction_data) = serialized_message
             .get(&self.props.delete_beam_section_local_axis_1_direction_message_header)
         {
             self.handle_delete_beam_section_local_axis_1_direction_message(
-                &local_axis_1_direction_data)?;
+                local_axis_1_direction_data)?;
         }
         else if let Some(beam_section_orientation_data) = serialized_message
             .get(&self.props.assign_beam_section_local_axis_1_direction_message_header)
         {
             self.handle_assign_beam_section_local_axis_1_direction_message(
-                &beam_section_orientation_data)?;
+                beam_section_orientation_data)?;
         }
         else if let Some(assigned_properties_to_surfaces_data) = serialized_message
             .get(&self.props.assign_properties_to_surfaces_message_header)
         {
-            self.handle_assign_properties_to_surfaces_message(&assigned_properties_to_surfaces_data)?;
+            self.handle_assign_properties_to_surfaces_message(assigned_properties_to_surfaces_data)?;
         }
         else if let Some(concentrated_load_data) = serialized_message
             .get(&self.props.add_concentrated_load_message_header)
         {
-            self.handle_add_concentrated_load_message(&concentrated_load_data)?;
+            self.handle_add_concentrated_load_message(concentrated_load_data)?;
         }
         else if let Some(concentrated_load_data) = serialized_message
             .get(&self.props.update_concentrated_load_message_header)
         {
-            self.handle_update_concentrated_load_message(&concentrated_load_data)?;
+            self.handle_update_concentrated_load_message(concentrated_load_data)?;
         }
         else if let Some(concentrated_load_data) = serialized_message
             .get(&self.props.delete_concentrated_load_message_header)
         {
-            self.handle_delete_concentrated_load_message(&concentrated_load_data)?;
+            self.handle_delete_concentrated_load_message(concentrated_load_data)?;
         }
         else if let Some(uniformly_distributed_line_load_data) = serialized_message
             .get(&self.props.add_uniformly_distributed_line_load_message_header)
         {
-            self.handle_add_uniformly_distributed_line_load_message(&uniformly_distributed_line_load_data)?;
+            self.handle_add_uniformly_distributed_line_load_message(uniformly_distributed_line_load_data)?;
         }
         else if let Some(uniformly_distributed_line_load_data) = serialized_message
             .get(&self.props.update_uniformly_distributed_line_load_message_header)
         {
-            self.handle_update_uniformly_distributed_line_load_message(&uniformly_distributed_line_load_data)?;
+            self.handle_update_uniformly_distributed_line_load_message(uniformly_distributed_line_load_data)?;
         }
         else if let Some(uniformly_distributed_line_load_data) = serialized_message
             .get(&self.props.delete_uniformly_distributed_line_load_message_header)
         {
-            self.handle_delete_uniformly_distributed_line_load_message(&uniformly_distributed_line_load_data)?;
+            self.handle_delete_uniformly_distributed_line_load_message(uniformly_distributed_line_load_data)?;
         }
         else if let Some(uniformly_distributed_surface_load_data) = serialized_message
             .get(&self.props.add_uniformly_distributed_surface_load_message_header)
         {
-            self.handle_add_uniformly_distributed_surface_load_message(&uniformly_distributed_surface_load_data)?;
+            self.handle_add_uniformly_distributed_surface_load_message(uniformly_distributed_surface_load_data)?;
         }
         else if let Some(uniformly_distributed_surface_load_data) = serialized_message
             .get(&self.props.update_uniformly_distributed_surface_load_message_header)
         {
-            self.handle_update_uniformly_distributed_surface_load_message(&uniformly_distributed_surface_load_data)?;
+            self.handle_update_uniformly_distributed_surface_load_message(uniformly_distributed_surface_load_data)?;
         }
         else if let Some(uniformly_distributed_surface_load_data) = serialized_message
             .get(&self.props.delete_uniformly_distributed_surface_load_message_header)
         {
-            self.handle_delete_uniformly_distributed_surface_load_message(&uniformly_distributed_surface_load_data)?;
+            self.handle_delete_uniformly_distributed_surface_load_message(uniformly_distributed_surface_load_data)?;
         }
         else if let Some(point_boundary_condition_data) = serialized_message
             .get(&self.props.add_point_boundary_condition_message_header)
         {
-            self.handle_add_point_boundary_condition_message(&point_boundary_condition_data)?;
+            self.handle_add_point_boundary_condition_message(point_boundary_condition_data)?;
         }
         else if let Some(point_boundary_condition_data) = serialized_message
             .get(&self.props.update_point_boundary_condition_message_header)
         {
-            self.handle_update_point_boundary_condition_message(&point_boundary_condition_data)?;
+            self.handle_update_point_boundary_condition_message(point_boundary_condition_data)?;
         }
         else if let Some(point_boundary_condition_data) = serialized_message
             .get(&self.props.delete_point_boundary_condition_message_header)
         {
-            self.handle_delete_point_boundary_condition_message(&point_boundary_condition_data)?;
+            self.handle_delete_point_boundary_condition_message(point_boundary_condition_data)?;
         }
         else if let Some(global_mesh_seed_data) = serialized_message.get(&self.props.update_global_mesh_seed_message_header)
         {
-            self.handle_update_global_mesh_seed_message(&global_mesh_seed_data)?;
+            self.handle_update_global_mesh_seed_message(global_mesh_seed_data)?;
         }
         else if let Some(lines_mesh_seed_data) = serialized_message.get(&self.props.update_lines_mesh_seed_message_header)
         {
-            self.handle_update_lines_mesh_seed_message(&lines_mesh_seed_data)?;
+            self.handle_update_lines_mesh_seed_message(lines_mesh_seed_data)?;
         }
         else if let Some(surfaces_mesh_seed_data) = serialized_message.get(&self.props.update_surfaces_mesh_seed_message_header)
         {
-            self.handle_update_surfaces_mesh_seed_message(&surfaces_mesh_seed_data)?;
+            self.handle_update_surfaces_mesh_seed_message(surfaces_mesh_seed_data)?;
         }
         else if let Some(undo_data) = serialized_message.get(&self.props.undo_message_header)
         {
-            self.handle_undo_message(&undo_data)?;
+            self.handle_undo_message(undo_data)?;
         }
         else if let Some(redo_data) = serialized_message.get(&self.props.redo_message_header)
         {
-            self.handle_redo_message(&redo_data)?;
+            self.handle_redo_message(redo_data)?;
             is_redo = true;
         }
         else

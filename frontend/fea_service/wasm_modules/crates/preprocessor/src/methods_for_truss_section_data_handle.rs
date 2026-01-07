@@ -55,7 +55,7 @@ impl Preprocessor
                 {
                     let error_message = &format!("Incorrect status for truss section deleted by action {}!",
                         action_id);
-                    return Err(JsValue::from(error_message));
+                    Err(JsValue::from(error_message))
                 },
                 Status::Deleted(n) =>
                 {
@@ -63,7 +63,7 @@ impl Preprocessor
                     {
                         let error_message = &format!("Incorrect name for truss section deleted by action {}!",
                             action_id);
-                        return Err(JsValue::from(error_message));
+                        Err(JsValue::from(error_message))
                     }
                     else
                     {
@@ -75,7 +75,7 @@ impl Preprocessor
         else
         {
             let error_message = &format!("No truss sections deleted by action {}!", action_id);
-            return Err(JsValue::from(error_message));
+            Err(JsValue::from(error_message))
         }
     }
 

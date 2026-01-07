@@ -154,7 +154,7 @@ pub fn extract_beam_elements_from_input_data(
                 local_axis_1_direction_z,
             ],
         )
-        .map_err(|e| JsValue::from(e))?;
+        .map_err(JsValue::from)?;
     }
     Ok(())
 }

@@ -38,18 +38,11 @@ impl Surface
     {
         let sequence = vec![point_1_number, point_2_number, point_3_number, point_4_number];
         let permutations = recursive_permutations(sequence);
-        if permutations.iter()
+        permutations.iter()
             .position(|permutation| 
                 *permutation == vec![self.point_1_number, self.point_2_number, self.point_3_number, 
                     self.point_4_number])
             .is_some()
-        {
-            true
-        }
-        else
-        {
-            false
-        }
     }
 
 

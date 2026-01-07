@@ -443,12 +443,12 @@ impl DenotationTrait for Line
     {
         let line_endpoints_coordinates: [f32; 6] = convert_vec_to_array(self.primitives_for_selection
             .get_ref_lines_endpoints_coordinates().to_vec());
-        let center = [
+        
+        [
             (line_endpoints_coordinates[0] + line_endpoints_coordinates[3]) / 2.0,
             (line_endpoints_coordinates[1] + line_endpoints_coordinates[4]) / 2.0,
             (line_endpoints_coordinates[2] + line_endpoints_coordinates[5]) / 2.0,
-        ];
-        center
+        ]
     }
 
 

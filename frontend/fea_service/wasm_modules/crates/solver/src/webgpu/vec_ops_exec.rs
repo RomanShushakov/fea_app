@@ -152,7 +152,7 @@ impl VecOpsExecutor {
         compute_pass.set_bind_group(0, Some(&bind_group));
 
         let workgroup_size = 256u32;
-        compute_pass.dispatch_workgroups((n + workgroup_size - 1) / workgroup_size);
+        compute_pass.dispatch_workgroups(n.div_ceil(workgroup_size));
         compute_pass.end();
 
         Ok(())
@@ -189,7 +189,7 @@ impl VecOpsExecutor {
         compute_pass.set_bind_group(0, Some(&bind_group));
 
         let workgroup_size = 256u32;
-        compute_pass.dispatch_workgroups((n + workgroup_size - 1) / workgroup_size);
+        compute_pass.dispatch_workgroups(n.div_ceil(workgroup_size));
         compute_pass.end();
 
         Ok(())
@@ -224,7 +224,7 @@ impl VecOpsExecutor {
         compute_pass.set_bind_group(0, Some(&bind_group));
 
         let workgroup_size = 256u32;
-        compute_pass.dispatch_workgroups((n + workgroup_size - 1) / workgroup_size);
+        compute_pass.dispatch_workgroups(n.div_ceil(workgroup_size));
         compute_pass.end();
 
         Ok(())

@@ -29,11 +29,11 @@ impl ShaderPrograms
 
         let vertex_shader = gl.create_shader(GL::VERTEX_SHADER)
             .ok_or_else(|| JsValue::from("Vertex shader could not be created!"))?;
-        gl.shader_source(&vertex_shader, &vertex_shader_code);
+        gl.shader_source(&vertex_shader, vertex_shader_code);
         gl.compile_shader(&vertex_shader);
         let fragment_shader = gl.create_shader(GL::FRAGMENT_SHADER)
             .ok_or_else(|| JsValue::from("Fragment shader could not be created!"))?;
-        gl.shader_source(&fragment_shader, &fragment_shader_code);
+        gl.shader_source(&fragment_shader, fragment_shader_code);
         gl.compile_shader(&fragment_shader);
         let shader_program = gl.create_program()
             .ok_or_else(|| JsValue::from("Shader program could not be created!"))?;
