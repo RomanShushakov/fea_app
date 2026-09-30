@@ -1,4 +1,4 @@
-use js_sys::Array;
+use js_sys::JsNullable;
 use wasm_bindgen::JsValue;
 use web_sys::gpu_shader_stage;
 use web_sys::{
@@ -70,13 +70,11 @@ pub fn create_dot_partials_pipeline(ctx: &WebGpuCtx) -> Result<DotPartialsPipeli
     bind_group_layout_0_entry_3.set_buffer(&read_write_layout);
 
     let bind_group_layout_0_entries = [
-        &bind_group_layout_0_entry_0,
-        &bind_group_layout_0_entry_1,
-        &bind_group_layout_0_entry_2,
-        &bind_group_layout_0_entry_3,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_layout_0_entry_0,
+        bind_group_layout_0_entry_1,
+        bind_group_layout_0_entry_2,
+        bind_group_layout_0_entry_3,
+    ];
 
     let dot_partials_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
@@ -88,7 +86,9 @@ pub fn create_dot_partials_pipeline(ctx: &WebGpuCtx) -> Result<DotPartialsPipeli
     // -----------------------------
     // Pipeline layout + pipeline
     // -----------------------------
-    let bind_group_layouts = [&dot_partials_bind_group_layout].iter().collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        dot_partials_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("dot_partials pipeline layout");
 
@@ -121,19 +121,21 @@ pub fn create_dot_partials_bind_group(
     b_buffer: &GpuBuffer,
     partial_buffer: &GpuBuffer,
 ) -> GpuBindGroup {
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 = GpuBindGroupEntry::new(1, &GpuBufferBinding::new(a_buffer));
-    let bind_group_0_entry_2 = GpuBindGroupEntry::new(2, &GpuBufferBinding::new(b_buffer));
-    let bind_group_0_entry_3 = GpuBindGroupEntry::new(3, &GpuBufferBinding::new(partial_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(a_buffer));
+    let bind_group_0_entry_2 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(2, &GpuBufferBinding::new(b_buffer));
+    let bind_group_0_entry_3 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(3, &GpuBufferBinding::new(partial_buffer));
 
     let bind_group_0_entries = [
-        &bind_group_0_entry_0,
-        &bind_group_0_entry_1,
-        &bind_group_0_entry_2,
-        &bind_group_0_entry_3,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_0_entry_0,
+        bind_group_0_entry_1,
+        bind_group_0_entry_2,
+        bind_group_0_entry_3,
+    ];
 
     let dot_partials_bind_group_desc =
         GpuBindGroupDescriptor::new(&bind_group_0_entries, dot_partials_bind_group_layout);

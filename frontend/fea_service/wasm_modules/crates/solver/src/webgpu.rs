@@ -1,7 +1,6 @@
 use extended_matrix::{BasicOperationsTrait, CsrMatrix, Position, Vector};
 use finite_element_method::SeparatedStiffnessMatrixSparse;
 use iterative_solvers_smpl::{block_jacobi::BlockJacobiPreconditioner, linalg::dot};
-use js_sys::Array;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 use web_sys::gpu_buffer_usage;
 
@@ -322,8 +321,7 @@ async fn pcg_block_jacobi_csr_webgpu(
         dot_scalar_exec.encode_copy_scalar_results_to_readback(&command_encoder)?;
 
         let command_buffer = command_encoder.finish();
-        ctx.queue
-            .submit(&[command_buffer].iter().collect::<Array>());
+        ctx.queue.submit(&[command_buffer]);
 
         let scalar_results = dot_scalar_exec.readback_scalar_results().await?;
         scalar_results[0]
@@ -538,8 +536,7 @@ async fn pcg_block_jacobi_csr_webgpu(
 
         // Submit once.
         let command_buffer = command_encoder.finish();
-        ctx.queue
-            .submit(&[command_buffer].iter().collect::<Array>());
+        ctx.queue.submit(&[command_buffer]);
 
         // Read all scalar slots back once.
         let scalar_results = dot_scalar_exec.readback_scalar_results().await?;
@@ -573,8 +570,7 @@ async fn pcg_block_jacobi_csr_webgpu(
                     n_bytes,
                 )?;
                 let command_buffer = command_encoder.finish();
-                ctx.queue
-                    .submit(&[command_buffer].iter().collect::<Array>());
+                ctx.queue.submit(&[command_buffer]);
                 read_back_f32(&x_readback, n).await?
             };
 

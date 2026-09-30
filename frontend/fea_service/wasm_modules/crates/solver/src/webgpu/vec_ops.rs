@@ -1,4 +1,4 @@
-use js_sys::Array;
+use js_sys::JsNullable;
 use wasm_bindgen::JsValue;
 use web_sys::gpu_shader_stage;
 use web_sys::{
@@ -74,12 +74,10 @@ pub fn create_axpy_pipeline(ctx: &WebGpuCtx) -> Result<AxpyPipeline, JsValue> {
     let bind_group_layout_0_entry_2 = create_storage_entry(2, false);
 
     let bind_group_layout_0_entries = [
-        &bind_group_layout_0_entry_0,
-        &bind_group_layout_0_entry_1,
-        &bind_group_layout_0_entry_2,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_layout_0_entry_0,
+        bind_group_layout_0_entry_1,
+        bind_group_layout_0_entry_2,
+    ];
 
     let axpy_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
@@ -87,7 +85,9 @@ pub fn create_axpy_pipeline(ctx: &WebGpuCtx) -> Result<AxpyPipeline, JsValue> {
 
     let axpy_bind_group_layout = device.create_bind_group_layout(&axpy_bind_group_layout_desc)?;
 
-    let bind_group_layouts = [&axpy_bind_group_layout].iter().collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        axpy_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("axpy pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -128,13 +128,11 @@ pub fn create_axpy_from_scalar_results_pipeline(
     let bind_group_layout_0_entry_3 = create_storage_entry(3, true);
 
     let bind_group_layout_0_entries = [
-        &bind_group_layout_0_entry_0,
-        &bind_group_layout_0_entry_1,
-        &bind_group_layout_0_entry_2,
-        &bind_group_layout_0_entry_3,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_layout_0_entry_0,
+        bind_group_layout_0_entry_1,
+        bind_group_layout_0_entry_2,
+        bind_group_layout_0_entry_3,
+    ];
 
     let axpy_from_scalar_results_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
@@ -143,9 +141,9 @@ pub fn create_axpy_from_scalar_results_pipeline(
     let axpy_from_scalar_results_bind_group_layout =
         device.create_bind_group_layout(&axpy_from_scalar_results_bind_group_layout_desc)?;
 
-    let bind_group_layouts = [&axpy_from_scalar_results_bind_group_layout]
-        .iter()
-        .collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        axpy_from_scalar_results_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("axpy_from_scalar_results pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -184,13 +182,10 @@ pub fn create_scale_from_scalar_results_pipeline(
     let bind_group_layout_0_entry_2 = create_storage_entry(2, true);
 
     let bind_group_layout_0_entries = [
-        &bind_group_layout_0_entry_0,
-        &bind_group_layout_0_entry_1,
-        &bind_group_layout_0_entry_2,
-    ]
-    .iter()
-    .collect::<Array>();
-
+        bind_group_layout_0_entry_0,
+        bind_group_layout_0_entry_1,
+        bind_group_layout_0_entry_2,
+    ];
     let scale_from_scalar_results_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
     scale_from_scalar_results_bind_group_layout_desc.set_label("scale_from_scalar_results bgl0");
@@ -198,9 +193,9 @@ pub fn create_scale_from_scalar_results_pipeline(
     let scale_from_scalar_results_bind_group_layout =
         device.create_bind_group_layout(&scale_from_scalar_results_bind_group_layout_desc)?;
 
-    let bind_group_layouts = [&scale_from_scalar_results_bind_group_layout]
-        .iter()
-        .collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        scale_from_scalar_results_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("scale_from_scalar_results pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -224,17 +219,18 @@ pub fn create_axpy_bind_group(
     x_buffer: &GpuBuffer,      // binding(1)
     y_buffer: &GpuBuffer,      // binding(2)
 ) -> GpuBindGroup {
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 = GpuBindGroupEntry::new(1, &GpuBufferBinding::new(x_buffer));
-    let bind_group_0_entry_2 = GpuBindGroupEntry::new(2, &GpuBufferBinding::new(y_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(x_buffer));
+    let bind_group_0_entry_2 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(2, &GpuBufferBinding::new(y_buffer));
 
     let bind_group_0_entries = [
-        &bind_group_0_entry_0,
-        &bind_group_0_entry_1,
-        &bind_group_0_entry_2,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_0_entry_0,
+        bind_group_0_entry_1,
+        bind_group_0_entry_2,
+    ];
 
     let axpy_bind_group_desc =
         GpuBindGroupDescriptor::new(&bind_group_0_entries, axpy_bind_group_layout);
@@ -251,20 +247,23 @@ pub fn create_axpy_from_scalar_results_bind_group(
     y_buffer: &GpuBuffer,              // binding(2)
     scalar_results_buffer: &GpuBuffer, // binding(3)
 ) -> GpuBindGroup {
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 = GpuBindGroupEntry::new(1, &GpuBufferBinding::new(x_buffer));
-    let bind_group_0_entry_2 = GpuBindGroupEntry::new(2, &GpuBufferBinding::new(y_buffer));
-    let bind_group_0_entry_3 =
-        GpuBindGroupEntry::new(3, &GpuBufferBinding::new(scalar_results_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(x_buffer));
+    let bind_group_0_entry_2 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(2, &GpuBufferBinding::new(y_buffer));
+    let bind_group_0_entry_3 = GpuBindGroupEntry::new_with_gpu_buffer_binding(
+        3,
+        &GpuBufferBinding::new(scalar_results_buffer),
+    );
 
     let bind_group_0_entries = [
-        &bind_group_0_entry_0,
-        &bind_group_0_entry_1,
-        &bind_group_0_entry_2,
-        &bind_group_0_entry_3,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_0_entry_0,
+        bind_group_0_entry_1,
+        bind_group_0_entry_2,
+        bind_group_0_entry_3,
+    ];
 
     let bind_group_desc = GpuBindGroupDescriptor::new(
         &bind_group_0_entries,
@@ -282,18 +281,20 @@ pub fn create_scale_from_scalar_results_bind_group(
     x_buffer: &GpuBuffer,              // binding(1)
     scalar_results_buffer: &GpuBuffer, // binding(2)
 ) -> GpuBindGroup {
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 = GpuBindGroupEntry::new(1, &GpuBufferBinding::new(x_buffer));
-    let bind_group_0_entry_2 =
-        GpuBindGroupEntry::new(2, &GpuBufferBinding::new(scalar_results_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(x_buffer));
+    let bind_group_0_entry_2 = GpuBindGroupEntry::new_with_gpu_buffer_binding(
+        2,
+        &GpuBufferBinding::new(scalar_results_buffer),
+    );
 
     let bind_group_0_entries = [
-        &bind_group_0_entry_0,
-        &bind_group_0_entry_1,
-        &bind_group_0_entry_2,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_0_entry_0,
+        bind_group_0_entry_1,
+        bind_group_0_entry_2,
+    ];
 
     let bind_group_desc = GpuBindGroupDescriptor::new(
         &bind_group_0_entries,

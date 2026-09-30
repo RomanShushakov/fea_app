@@ -1,4 +1,4 @@
-use js_sys::Array;
+use js_sys::JsNullable;
 use wasm_bindgen::JsValue;
 use web_sys::gpu_shader_stage;
 use web_sys::{
@@ -78,15 +78,13 @@ pub fn create_spmv_pipeline(ctx: &WebGpuCtx) -> Result<SpmvPipeline, JsValue> {
     let bind_group_layout_0_entry_5 = create_storage_entry(5, false);
 
     let bind_group_layout_0_entries = [
-        &bind_group_layout_0_entry_0,
-        &bind_group_layout_0_entry_1,
-        &bind_group_layout_0_entry_2,
-        &bind_group_layout_0_entry_3,
-        &bind_group_layout_0_entry_4,
-        &bind_group_layout_0_entry_5,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_layout_0_entry_0,
+        bind_group_layout_0_entry_1,
+        bind_group_layout_0_entry_2,
+        bind_group_layout_0_entry_3,
+        bind_group_layout_0_entry_4,
+        bind_group_layout_0_entry_5,
+    ];
 
     let spmv_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
@@ -97,7 +95,9 @@ pub fn create_spmv_pipeline(ctx: &WebGpuCtx) -> Result<SpmvPipeline, JsValue> {
     // ------------------------------------------------------------------------
     // Pipeline layout
     // ------------------------------------------------------------------------
-    let bind_group_layouts = [&spmv_bind_group_layout].iter().collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        spmv_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("spmv pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -128,23 +128,27 @@ pub fn create_spmv_bind_group(
     y_buffer: &GpuBuffer,
 ) -> GpuBindGroup {
     // group(0) bindings must match the layout and WGSL exactly.
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 = GpuBindGroupEntry::new(1, &GpuBufferBinding::new(row_ptr_buffer));
-    let bind_group_0_entry_2 = GpuBindGroupEntry::new(2, &GpuBufferBinding::new(col_idx_buffer));
-    let bind_group_0_entry_3 = GpuBindGroupEntry::new(3, &GpuBufferBinding::new(values_buffer));
-    let bind_group_0_entry_4 = GpuBindGroupEntry::new(4, &GpuBufferBinding::new(x_buffer));
-    let bind_group_0_entry_5 = GpuBindGroupEntry::new(5, &GpuBufferBinding::new(y_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(row_ptr_buffer));
+    let bind_group_0_entry_2 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(2, &GpuBufferBinding::new(col_idx_buffer));
+    let bind_group_0_entry_3 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(3, &GpuBufferBinding::new(values_buffer));
+    let bind_group_0_entry_4 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(4, &GpuBufferBinding::new(x_buffer));
+    let bind_group_0_entry_5 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(5, &GpuBufferBinding::new(y_buffer));
 
     let bind_group_layout_0_entries = [
-        &bind_group_0_entry_0,
-        &bind_group_0_entry_1,
-        &bind_group_0_entry_2,
-        &bind_group_0_entry_3,
-        &bind_group_0_entry_4,
-        &bind_group_0_entry_5,
-    ]
-    .iter()
-    .collect::<Array>();
+        bind_group_0_entry_0,
+        bind_group_0_entry_1,
+        bind_group_0_entry_2,
+        bind_group_0_entry_3,
+        bind_group_0_entry_4,
+        bind_group_0_entry_5,
+    ];
 
     let spmv_bind_group_desc =
         GpuBindGroupDescriptor::new(&bind_group_layout_0_entries, spmv_bind_group_layout);

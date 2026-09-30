@@ -1,4 +1,4 @@
-use js_sys::Array;
+use js_sys::JsNullable;
 use wasm_bindgen::JsValue;
 use web_sys::gpu_shader_stage;
 use web_sys::{
@@ -66,14 +66,12 @@ pub fn create_block_jacobi_pipeline(ctx: &WebGpuCtx) -> Result<BlockJacobiPipeli
     let bing_group_layout_0_entry_4 = create_storage_entry(4, false); // z (RW)
 
     let bing_group_layout_0_entries = [
-        &bing_group_layout_0_entry_0,
-        &bing_group_layout_0_entry_1,
-        &bing_group_layout_0_entry_2,
-        &bing_group_layout_0_entry_3,
-        &bing_group_layout_0_entry_4,
-    ]
-    .iter()
-    .collect::<Array>();
+        bing_group_layout_0_entry_0,
+        bing_group_layout_0_entry_1,
+        bing_group_layout_0_entry_2,
+        bing_group_layout_0_entry_3,
+        bing_group_layout_0_entry_4,
+    ];
 
     let block_jacobi_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bing_group_layout_0_entries);
@@ -83,7 +81,9 @@ pub fn create_block_jacobi_pipeline(ctx: &WebGpuCtx) -> Result<BlockJacobiPipeli
         device.create_bind_group_layout(&block_jacobi_bind_group_layout_desc)?;
 
     // Pipeline layout
-    let bind_group_layouts = [&block_jacobi_bind_group_layout].iter().collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        block_jacobi_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("block_jacobi pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -110,23 +110,25 @@ pub fn create_block_jacobi_bind_group(
     z_buffer: &GpuBuffer,
 ) -> GpuBindGroup {
     let bing_group_layout_0_entry_0 =
-        GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
     let bing_group_layout_0_entry_1 =
-        GpuBindGroupEntry::new(1, &GpuBufferBinding::new(lu_blocks_buffer));
-    let bing_group_layout_0_entry_2 =
-        GpuBindGroupEntry::new(2, &GpuBufferBinding::new(block_starts_buffer));
-    let bing_group_layout_0_entry_3 = GpuBindGroupEntry::new(3, &GpuBufferBinding::new(r_buffer));
-    let bing_group_layout_0_entry_4 = GpuBindGroupEntry::new(4, &GpuBufferBinding::new(z_buffer));
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(1, &GpuBufferBinding::new(lu_blocks_buffer));
+    let bing_group_layout_0_entry_2 = GpuBindGroupEntry::new_with_gpu_buffer_binding(
+        2,
+        &GpuBufferBinding::new(block_starts_buffer),
+    );
+    let bing_group_layout_0_entry_3 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(3, &GpuBufferBinding::new(r_buffer));
+    let bing_group_layout_0_entry_4 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(4, &GpuBufferBinding::new(z_buffer));
 
     let bing_group_layout_0_entries = [
-        &bing_group_layout_0_entry_0,
-        &bing_group_layout_0_entry_1,
-        &bing_group_layout_0_entry_2,
-        &bing_group_layout_0_entry_3,
-        &bing_group_layout_0_entry_4,
-    ]
-    .iter()
-    .collect::<Array>();
+        bing_group_layout_0_entry_0,
+        bing_group_layout_0_entry_1,
+        bing_group_layout_0_entry_2,
+        bing_group_layout_0_entry_3,
+        bing_group_layout_0_entry_4,
+    ];
 
     let block_jacobi_bind_group_desc =
         GpuBindGroupDescriptor::new(&bing_group_layout_0_entries, block_jacobi_bind_group_layout);

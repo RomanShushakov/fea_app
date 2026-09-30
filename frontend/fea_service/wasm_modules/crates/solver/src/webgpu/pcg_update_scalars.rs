@@ -1,4 +1,4 @@
-use js_sys::Array;
+use js_sys::JsNullable;
 use wasm_bindgen::JsValue;
 use web_sys::gpu_shader_stage;
 use web_sys::{
@@ -69,9 +69,7 @@ pub fn create_pcg_update_scalars_pipeline(
     let bind_group_layout_0_entry_0 = create_uniform_entry(0); // Params
     let bind_group_layout_0_entry_1 = create_storage_entry(1, false); // scalar_results RW
 
-    let bind_group_layout_0_entries = [&bind_group_layout_0_entry_0, &bind_group_layout_0_entry_1]
-        .iter()
-        .collect::<Array>();
+    let bind_group_layout_0_entries = [bind_group_layout_0_entry_0, bind_group_layout_0_entry_1];
 
     let pcg_update_scalars_bind_group_layout_desc =
         GpuBindGroupLayoutDescriptor::new(&bind_group_layout_0_entries);
@@ -81,9 +79,9 @@ pub fn create_pcg_update_scalars_pipeline(
         device.create_bind_group_layout(&pcg_update_scalars_bind_group_layout_desc)?;
 
     // Pipeline layout.
-    let bind_group_layouts = [&pcg_update_scalars_bind_group_layout]
-        .iter()
-        .collect::<Array>();
+    let bind_group_layouts = [JsNullable::from_option(Some(
+        pcg_update_scalars_bind_group_layout.clone(),
+    ))];
     let pipeline_layout_desc = GpuPipelineLayoutDescriptor::new(&bind_group_layouts);
     pipeline_layout_desc.set_label("pcg_update_scalars pipeline layout");
     let pipeline_layout = device.create_pipeline_layout(&pipeline_layout_desc);
@@ -113,13 +111,14 @@ pub fn create_pcg_update_scalars_bind_group(
     params_buffer: &GpuBuffer,
     scalar_results_buffer: &GpuBuffer,
 ) -> GpuBindGroup {
-    let bind_group_0_entry_0 = GpuBindGroupEntry::new(0, &GpuBufferBinding::new(params_buffer));
-    let bind_group_0_entry_1 =
-        GpuBindGroupEntry::new(1, &GpuBufferBinding::new(scalar_results_buffer));
+    let bind_group_0_entry_0 =
+        GpuBindGroupEntry::new_with_gpu_buffer_binding(0, &GpuBufferBinding::new(params_buffer));
+    let bind_group_0_entry_1 = GpuBindGroupEntry::new_with_gpu_buffer_binding(
+        1,
+        &GpuBufferBinding::new(scalar_results_buffer),
+    );
 
-    let bind_group_0_entries = [&bind_group_0_entry_0, &bind_group_0_entry_1]
-        .iter()
-        .collect::<Array>();
+    let bind_group_0_entries = [bind_group_0_entry_0, bind_group_0_entry_1];
 
     let bind_group_desc =
         GpuBindGroupDescriptor::new(&bind_group_0_entries, pcg_update_scalars_bind_group_layout);

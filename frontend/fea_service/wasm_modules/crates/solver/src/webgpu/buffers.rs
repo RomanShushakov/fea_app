@@ -19,7 +19,7 @@ pub fn create_storage_buffer_f32(
     extra_usage: u32,
 ) -> Result<GpuBuffer, JsValue> {
     let usage = gpu_buffer_usage::STORAGE | gpu_buffer_usage::COPY_DST | extra_usage;
-    let desc = GpuBufferDescriptor::new((len * 4) as f64, usage);
+    let desc = GpuBufferDescriptor::new((len * 4) as u32, usage);
     desc.set_label(label);
 
     device.create_buffer(&desc).map_err(|e| {
@@ -41,7 +41,7 @@ pub fn create_uniform_buffer(
     label: &str,
 ) -> Result<GpuBuffer, JsValue> {
     let usage = gpu_buffer_usage::UNIFORM | gpu_buffer_usage::COPY_DST;
-    let desc = GpuBufferDescriptor::new(byte_len as f64, usage);
+    let desc = GpuBufferDescriptor::new(byte_len as u32, usage);
     desc.set_label(label);
 
     device.create_buffer(&desc).map_err(|e| {
@@ -101,7 +101,7 @@ pub fn create_readback_buffer(
     label: &str,
 ) -> Result<GpuBuffer, JsValue> {
     let usage = gpu_buffer_usage::MAP_READ | gpu_buffer_usage::COPY_DST;
-    let desc = GpuBufferDescriptor::new(byte_len as f64, usage);
+    let desc = GpuBufferDescriptor::new(byte_len as u32, usage);
     desc.set_label(label);
 
     device.create_buffer(&desc).map_err(|e| {
@@ -149,7 +149,7 @@ pub fn create_storage_buffer_u32_with_data(
     extra_usage: u32,
 ) -> Result<GpuBuffer, JsValue> {
     let usage = gpu_buffer_usage::STORAGE | gpu_buffer_usage::COPY_DST | extra_usage;
-    let desc = GpuBufferDescriptor::new((data.len() * 4) as f64, usage);
+    let desc = GpuBufferDescriptor::new((data.len() * 4) as u32, usage);
     desc.set_label(label);
 
     let buf = device.create_buffer(&desc).map_err(|e| {
@@ -177,7 +177,7 @@ pub fn create_storage_buffer_f32_with_data(
     extra_usage: u32,
 ) -> Result<GpuBuffer, JsValue> {
     let usage = gpu_buffer_usage::STORAGE | gpu_buffer_usage::COPY_DST | extra_usage;
-    let desc = GpuBufferDescriptor::new((data.len() * 4) as f64, usage);
+    let desc = GpuBufferDescriptor::new((data.len() * 4) as u32, usage);
     desc.set_label(label);
 
     let buf = device.create_buffer(&desc).map_err(|e| {
@@ -214,7 +214,7 @@ pub fn encode_write_f32_into_storage_buffer_at_index(
     // Must include COPY_DST for queue.write_buffer and COPY_SRC for copy_buffer_to_buffer.
     let usage = gpu_buffer_usage::COPY_DST | gpu_buffer_usage::COPY_SRC;
 
-    let desc = GpuBufferDescriptor::new(4f64, usage);
+    let desc = GpuBufferDescriptor::new(4u32, usage);
     desc.set_label(label);
 
     let staging_u32_buffer = device.create_buffer(&desc).map_err(|e| {
